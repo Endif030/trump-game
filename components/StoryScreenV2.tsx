@@ -172,8 +172,8 @@ export default function StoryScreenV2() {
             {/* 贪婪成性 - 贪婪路线 */}
             <div className="bg-gradient-to-br from-yellow-600 to-orange-700 rounded-xl p-3 text-center">
               <p className="text-yellow-200 text-xs mb-1">{language === 'zh' ? '贪婪成性' : 'Greed Progress'}</p>
-              <p className="text-white font-bold text-sm">{greedyProgress.toFixed(3)}%</p>
-              <div className="w-full bg-orange-900 rounded-full h-2 mt-1"><div className="bg-yellow-300 h-2 rounded-full transition-all" style={{ width: `${Math.max(0.5, greedyProgress)}%` }} /></div>
+              <p className="text-white font-bold text-sm">{greedyProgress.toFixed(1)}%</p>
+              <div className="w-full bg-orange-900 rounded-full h-2 mt-1"><div className="bg-yellow-300 h-2 rounded-full transition-all" style={{ width: `${greedyProgress}%` }} /></div>
             </div>
           </motion.div>
 
