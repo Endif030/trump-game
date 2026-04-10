@@ -7,18 +7,36 @@ import { ATTRIBUTE_OPTIONS, TOTAL_ATTRIBUTE_POINTS } from '../data/gameDataV2';
 import TrumpAvatar from './TrumpAvatar';
 import BackToHome from './BackToHome';
 
-// 根据当前值计算实际效果
+// 根据当前值计算实际效果描述
 function getEffectDescription(attr: any, value: number, language: 'zh' | 'en') {
-  if (value === 0) return language === 'zh' ? '无加成' : 'No bonus';
+  if (value === 0) {
+    return language === 'zh' ? '无加成' : 'No bonus';
+  }
   
+  // 政治人脉特殊处理
+  if (attr.id === 'politicalConnections') {
+    return attr.effect[language];
+  }
+  
+  // 其他属性：根据数值计算总效果
   const baseEffect = attr.effect[language];
-  // 提取数字部分
   const match = baseEffect.match(/(\d+)%/);
   if (match) {
     const perPoint = parseInt(match[1]);
     const totalEffect = perPoint * value;
+    
     if (language === 'zh') {
-      return `增加 ${totalEffect}% ${baseEffect.split('增加')[1]?.split('%')[1] || ''}`;
+      // 根据属性类型返回不同的描述
+      if (attr.id === 'mediaControl') {
+        return `增加消息传播效果 ${totalEffect}%`;
+      } else if (attr.id === 'businessIntuition') {
+        return `增加投资成功率 ${totalEffect}%`;
+      } else if (attr.id === 'speechTalent') {
+        return `增加民众支持变化 ${totalEffect}%`;
+      } else if (attr.id === 'secrecy') {
+        return `降低被发现概率 ${totalEffect}%`;
+      }
+      return `增加 ${totalEffect}%`;
     } else {
       return `+${totalEffect}% effect`;
     }
@@ -37,20 +55,45 @@ export default function CharacterCreationV2() {
   });
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const usedPoints = Object.values(attributes).reduce((a, b) => a + b, 0);
+  const usedPoints = Object.entries(attributes).reduce((total, [id, value]) => {
+    // 政治人脉是二元选择，值为5时消耗5点
+    if (id === 'politicalConnections') {
+      return total + (value > 0 ? 5 : 0);
+    }
+    return total + value;
+  }, 0);
+  
   const remainingPoints = TOTAL_ATTRIBUTE_POINTS - usedPoints;
 
-  const handleIncrement = (attrId: string) => {
+  const handleIncrement = (attrId: string, isBinary: boolean) => {
     const currentValue = attributes[attrId as keyof typeof attributes];
-    if (currentValue < 5 && remainingPoints > 0) {
-      setAttrs(prev => ({ ...prev, [attrId]: currentValue + 1 }));
+    
+    if (isBinary) {
+      // 二元选择：0 -> 5
+      if (currentValue === 0 && remainingPoints >= 5) {
+        setAttrs(prev => ({ ...prev, [attrId]: 5 }));
+      }
+    } else {
+      // 正常递增
+      if (currentValue < 5 && remainingPoints > 0) {
+        setAttrs(prev => ({ ...prev, [attrId]: currentValue + 1 }));
+      }
     }
   };
 
-  const handleDecrement = (attrId: string) => {
+  const handleDecrement = (attrId: string, isBinary: boolean) => {
     const currentValue = attributes[attrId as keyof typeof attributes];
-    if (currentValue > 0) {
-      setAttrs(prev => ({ ...prev, [attrId]: currentValue - 1 }));
+    
+    if (isBinary) {
+      // 二元选择：5 -> 0
+      if (currentValue > 0) {
+        setAttrs(prev => ({ ...prev, [attrId]: 0 }));
+      }
+    } else {
+      // 正常递减
+      if (currentValue > 0) {
+        setAttrs(prev => ({ ...prev, [attrId]: currentValue - 1 }));
+      }
     }
   };
 
@@ -61,7 +104,7 @@ export default function CharacterCreationV2() {
 
   const getBuildDescription = () => {
     const maxAttr = Object.entries(attributes).sort((a, b) => b[1] - a[1])[0];
-    if (maxAttr[1] < 3) return language === 'zh' ? '🎲 均衡发展型' : '🎲 Balanced Build';
+    if (maxAttr[1] < 3 && maxAttr[0] !== 'politicalConnections') return language === 'zh' ? '🎲 均衡发展型' : '🎲 Balanced Build';
     
     const descriptions: Record<string, { zh: string; en: string }> = {
       mediaControl: { zh: '📱 媒体操盘手', en: '📱 Media Manipulator' },
@@ -84,6 +127,10 @@ export default function CharacterCreationV2() {
       }));
   };
 
+  // 分离政治人脉和其他属性
+  const politicalAttr = ATTRIBUTE_OPTIONS.find(a => a.id === 'politicalConnections');
+  const otherAttrs = ATTRIBUTE_OPTIONS.filter(a => a.id !== 'politicalConnections');
+
   return (
     <motion.div 
       className="min-h-screen bg-cover bg-center bg-fixed relative"
@@ -99,10 +146,18 @@ export default function CharacterCreationV2() {
       
       <div className="relative z-10 max-w-4xl mx-auto p-4">
         {/* Header */}
-        <motion.div className="text-center mb-6" initial={{ y: -20 }} animate={{ y: 0 }}>
+        <motion.div className="text-center mb-4" initial={{ y: -20 }} animate={{ y: 0 }}>
           <TrumpAvatar size="lg" expression="neutral" className="mx-auto mb-4" />
           <h1 className="text-4xl font-black text-yellow-400 mb-2">{language === 'zh' ? '塑造你的总统' : 'Shape Your President'}</h1>
           <p className="text-white/70">{language === 'zh' ? '海湖庄园，就职前夜。分配你的政治资本。' : 'Mar-a-Lago, eve of inauguration. Allocate your political capital.'}</p>
+        </motion.div>
+
+        {/* Starting Funds - Moved to top */}
+        <motion.div className="bg-white/10 backdrop-blur-md rounded-lg p-4 mb-4 text-center border border-white/20"
+          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+        >
+          <p className="text-white/70 text-sm mb-1">{language === 'zh' ? '启动资金 (剩余点数 × $20万)' : 'Starting Funds (Remaining × $200K)'}</p>
+          <p className="text-3xl font-bold text-green-400">${(5000000 + remainingPoints * 200000).toLocaleString()}</p>
         </motion.div>
 
         {/* Points Display */}
@@ -112,39 +167,171 @@ export default function CharacterCreationV2() {
           <p className="text-red-800 text-sm">/ {TOTAL_ATTRIBUTE_POINTS} pts</p>
         </motion.div>
 
-        {/* Starting Funds Display */}
-        <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 mb-6 text-center border border-white/20">
-          <p className="text-white/70 text-sm mb-1">{language === 'zh' ? '启动资金 (剩余点数 × $20万)' : 'Starting Funds (Remaining × $200K)'}</p>
-          <p className="text-3xl font-bold text-green-400">${(5000000 + remainingPoints * 200000).toLocaleString()}</p>
-        </div>
+        {/* Attribute Cards - 2 columns layout */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          {/* Left column: first 3 attributes */}
+          <div className="space-y-4">
+            {otherAttrs.slice(0, 3).map((attr, index) => {
+              const value = attributes[attr.id as keyof typeof attributes];
+              const canIncrease = value < 5 && remainingPoints > 0;
+              const canDecrease = value > 0;
+              
+              return (
+                <motion.div 
+                  key={attr.id} 
+                  className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
+                  initial={{ opacity: 0, x: -20 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="text-center mb-2">
+                    <span className="font-bold text-white text-lg">{attr.name[language]}</span>
+                    <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
+                  </div>
+                  
+                  {/* +/- Controls */}
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <button
+                      onClick={() => handleDecrement(attr.id, false)}
+                      disabled={!canDecrease}
+                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                        canDecrease 
+                          ? 'bg-red-500 hover:bg-red-600 text-white' 
+                          : 'bg-white/10 text-white/30 cursor-not-allowed'
+                      }`}
+                    >
+                      −
+                    </button>
+                    
+                    <span className={`text-3xl font-black w-12 text-center ${
+                      value > 0 ? 'text-yellow-400' : 'text-white/40'
+                    }`}>
+                      {value}
+                    </span>
+                    
+                    <button
+                      onClick={() => handleIncrement(attr.id, false)}
+                      disabled={!canIncrease}
+                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                        canIncrease 
+                          ? 'bg-green-500 hover:bg-green-600 text-white' 
+                          : 'bg-white/10 text-white/30 cursor-not-allowed'
+                      }`}
+                    >
+                      +
+                    </button>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="w-full bg-white/20 rounded-full h-2 mb-2">
+                    <div 
+                      className={`h-2 rounded-full transition-all ${
+                        value > 0 ? 'bg-yellow-400' : 'bg-transparent'
+                      }`} 
+                      style={{ width: `${(value / 5) * 100}%` }} 
+                    />
+                  </div>
+                  
+                  {/* Dynamic effect description */}
+                  <p className={`text-xs mt-1 text-center font-semibold ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                    {getEffectDescription(attr, value, language)}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
 
-        {/* Attribute Cards - 2x3 Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          {ATTRIBUTE_OPTIONS.map((attr, index) => {
-            const value = attributes[attr.id as keyof typeof attributes];
-            const canIncrease = value < 5 && remainingPoints > 0;
-            const canDecrease = value > 0;
+          {/* Right column: last 2 attributes + political connections */}
+          <div className="space-y-4">
+            {otherAttrs.slice(3).map((attr, index) => {
+              const value = attributes[attr.id as keyof typeof attributes];
+              const canIncrease = value < 5 && remainingPoints > 0;
+              const canDecrease = value > 0;
+              
+              return (
+                <motion.div 
+                  key={attr.id} 
+                  className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
+                  initial={{ opacity: 0, x: 20 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="text-center mb-2">
+                    <span className="font-bold text-white text-lg">{attr.name[language]}</span>
+                    <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
+                  </div>
+                  
+                  {/* +/- Controls */}
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <button
+                      onClick={() => handleDecrement(attr.id, false)}
+                      disabled={!canDecrease}
+                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                        canDecrease 
+                          ? 'bg-red-500 hover:bg-red-600 text-white' 
+                          : 'bg-white/10 text-white/30 cursor-not-allowed'
+                      }`}
+                    >
+                      −
+                    </button>
+                    
+                    <span className={`text-3xl font-black w-12 text-center ${
+                      value > 0 ? 'text-yellow-400' : 'text-white/40'
+                    }`}>
+                      {value}
+                    </span>
+                    
+                    <button
+                      onClick={() => handleIncrement(attr.id, false)}
+                      disabled={!canIncrease}
+                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                        canIncrease 
+                          ? 'bg-green-500 hover:bg-green-600 text-white' 
+                          : 'bg-white/10 text-white/30 cursor-not-allowed'
+                      }`}
+                    >
+                      +
+                    </button>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="w-full bg-white/20 rounded-full h-2 mb-2">
+                    <div 
+                      className={`h-2 rounded-full transition-all ${
+                        value > 0 ? 'bg-yellow-400' : 'bg-transparent'
+                      }`} 
+                      style={{ width: `${(value / 5) * 100}%` }} 
+                    />
+                  </div>
+                  
+                  {/* Dynamic effect description */}
+                  <p className={`text-xs mt-1 text-center font-semibold ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                    {getEffectDescription(attr, value, language)}
+                  </p>
+                </motion.div>
+              );
+            })}
             
-            return (
+            {/* Political Connections - Binary choice, spans full width of right column */}
+            {politicalAttr && (
               <motion.div 
-                key={attr.id} 
                 className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: index * 0.1 }}
+                initial={{ opacity: 0, x: 20 }} 
+                animate={{ opacity: 1, x: 0 }} 
+                transition={{ delay: 0.3 }}
               >
-                <div className="text-center mb-3">
-                  <span className="font-bold text-white text-lg">{attr.name[language]}</span>
-                  <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
+                <div className="text-center mb-2">
+                  <span className="font-bold text-white text-lg">{politicalAttr.name[language]}</span>
+                  <p className="text-white/60 text-xs mt-1">{politicalAttr.description[language]}</p>
                 </div>
                 
-                {/* +/- Controls */}
-                <div className="flex items-center justify-center gap-3 mb-3">
+                {/* Binary Toggle */}
+                <div className="flex items-center justify-center gap-3 mb-2">
                   <button
-                    onClick={() => handleDecrement(attr.id)}
-                    disabled={!canDecrease}
+                    onClick={() => handleDecrement('politicalConnections', true)}
+                    disabled={attributes.politicalConnections === 0}
                     className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                      canDecrease 
+                      attributes.politicalConnections > 0 
                         ? 'bg-red-500 hover:bg-red-600 text-white' 
                         : 'bg-white/10 text-white/30 cursor-not-allowed'
                     }`}
@@ -153,16 +340,16 @@ export default function CharacterCreationV2() {
                   </button>
                   
                   <span className={`text-3xl font-black w-12 text-center ${
-                    value > 0 ? 'text-yellow-400' : 'text-white/40'
+                    attributes.politicalConnections > 0 ? 'text-yellow-400' : 'text-white/40'
                   }`}>
-                    {value}
+                    {attributes.politicalConnections > 0 ? '✓' : '−'}
                   </span>
                   
                   <button
-                    onClick={() => handleIncrement(attr.id)}
-                    disabled={!canIncrease}
+                    onClick={() => handleIncrement('politicalConnections', true)}
+                    disabled={attributes.politicalConnections > 0 || remainingPoints < 5}
                     className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                      canIncrease 
+                      attributes.politicalConnections === 0 && remainingPoints >= 5
                         ? 'bg-green-500 hover:bg-green-600 text-white' 
                         : 'bg-white/10 text-white/30 cursor-not-allowed'
                     }`}
@@ -171,23 +358,28 @@ export default function CharacterCreationV2() {
                   </button>
                 </div>
                 
-                {/* Progress Bar - Solid when has value */}
+                {/* Progress Bar - Full or empty */}
                 <div className="w-full bg-white/20 rounded-full h-2 mb-2">
                   <div 
                     className={`h-2 rounded-full transition-all ${
-                      value > 0 ? 'bg-yellow-400' : 'bg-transparent'
+                      attributes.politicalConnections > 0 ? 'bg-yellow-400' : 'bg-transparent'
                     }`} 
-                    style={{ width: `${(value / 5) * 100}%` }} 
+                    style={{ width: attributes.politicalConnections > 0 ? '100%' : '0%' }} 
                   />
                 </div>
                 
-                {/* Dynamic effect description */}
-                <p className={`text-xs mt-1 text-center font-semibold ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
-                  {getEffectDescription(attr, value, language)}
+                {/* Effect description */}
+                <p className={`text-xs mt-1 text-center font-semibold ${attributes.politicalConnections > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                  {attributes.politicalConnections > 0 
+                    ? politicalAttr.effect[language] 
+                    : (language === 'zh' ? '未解锁' : 'Locked')}
+                </p>
+                <p className="text-white/50 text-xs text-center mt-1">
+                  {language === 'zh' ? '(消耗 5 点)' : '(Costs 5 points)'}
                 </p>
               </motion.div>
-            );
-          })}
+            )}
+          </div>
         </div>
 
         {/* Build Type Indicator */}
@@ -242,7 +434,9 @@ export default function CharacterCreationV2() {
                   <div key={index} className="bg-white/10 rounded-lg p-3">
                     <div className="flex justify-between items-center">
                       <span className="text-white font-semibold">{attr.name}</span>
-                      <span className="text-yellow-400 font-bold">{attr.value} / 5</span>
+                      <span className="text-yellow-400 font-bold">
+                        {attr.name.includes('政治') ? (attr.value > 0 ? '已解锁' : '未解锁') : `${attr.value} / 5`}
+                      </span>
                     </div>
                     <p className="text-yellow-400/80 text-sm mt-1">{attr.effect}</p>
                   </div>

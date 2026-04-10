@@ -21,6 +21,7 @@ export const ATTRIBUTE_OPTIONS: AttributeOption[] = [
     name: { zh: '🏛️ 政治人脉', en: '🏛️ Political Network' }, 
     description: { zh: '国会山走廊里有多少老朋友', en: 'How many old friends in Capitol Hill corridors' }, 
     maxValue: 5,
+    binary: true, // 二元选择：0或5
     effect: { zh: '解锁特殊幕后操作选项', en: 'Unlock special backroom deal options' } 
   },
   { 

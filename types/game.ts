@@ -43,6 +43,7 @@ export interface AttributeOption {
   description: { zh: string; en: string };
   cost?: number;
   maxValue?: number;
+  binary?: boolean; // 二元选择：0或maxValue
   effect: { zh: string; en: string };
 }
 

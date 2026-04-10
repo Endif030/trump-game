@@ -1,2 +1,2 @@
-:HL["/trump-game/_next/static/chunks/0yzxr1l19_yjy.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"v6aB7PessUBTfKuMxdPbw"}
+:HL["/trump-game/_next/static/chunks/17u0wfn7.-6_n.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"1Ky7S2192Ob2cNvlQSy79"}
