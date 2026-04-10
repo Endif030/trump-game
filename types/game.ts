@@ -58,6 +58,7 @@ export interface StoryLevel {
 
 export interface StoryOption {
   id: string;
+  title?: { zh: string; en: string };
   text: { zh: string; en: string };
   requirement?: {
     attribute?: keyof GameState['attributes'];

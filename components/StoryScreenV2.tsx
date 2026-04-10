@@ -7,6 +7,15 @@ import { STORY_LEVELS } from '../data/gameDataV2';
 import TrumpAvatar from './TrumpAvatar';
 import BackToHome from './BackToHome';
 
+// 属性名称映射
+const ATTRIBUTE_NAMES: Record<string, { zh: string; en: string }> = {
+  mediaControl: { zh: '媒体操控', en: 'Media Control' },
+  businessIntuition: { zh: '商业嗅觉', en: 'Business Intuition' },
+  politicalConnections: { zh: '政治人脉', en: 'Political Connections' },
+  speechTalent: { zh: '演讲魅力', en: 'Speech Talent' },
+  secrecy: { zh: '保密等级', en: 'Secrecy' },
+};
+
 export default function StoryScreenV2() {
   const { 
     language, 
@@ -129,9 +138,16 @@ export default function StoryScreenV2() {
                         className={`w-full p-4 rounded-xl text-left transition-all ${meetsRequirement ? 'bg-white/10 hover:bg-white/20 border border-white/30' : 'bg-white/5 border border-white/10 opacity-50'}`}
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}
                       >
-                        <p className={`font-semibold text-lg ${meetsRequirement ? 'text-white' : 'text-white/40'}`}>{option.text[language]}</p>
+                        {option.title && (
+                          <p className={`font-bold text-lg mb-2 ${meetsRequirement ? 'text-yellow-400' : 'text-yellow-400/40'}`}>
+                            {option.title[language]}
+                          </p>
+                        )}
+                        <p className={`text-base ${meetsRequirement ? 'text-white' : 'text-white/40'}`}>{option.text[language]}</p>
                         {!meetsRequirement && option.requirement && (
-                          <p className="text-red-400 text-sm mt-2">{language === 'zh' ? `需要 ${option.requirement.attribute} ≥ ${option.requirement.minValue}` : `Requires ${option.requirement.attribute} ≥ ${option.requirement.minValue}`}</p>
+                          <p className="text-red-400 text-sm mt-2">
+                            {language === 'zh' ? `需要 ${ATTRIBUTE_NAMES[option.requirement.attribute]?.zh || option.requirement.attribute} ≥ ${option.requirement.minValue}` : `Requires ${ATTRIBUTE_NAMES[option.requirement.attribute]?.en || option.requirement.attribute} ≥ ${option.requirement.minValue}`}
+                          </p>
                         )}
                       </motion.button>
                     );

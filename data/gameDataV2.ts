@@ -6,36 +6,36 @@ export const ATTRIBUTE_OPTIONS: AttributeOption[] = [
     id: 'mediaControl', 
     name: { zh: '📺 媒体操控', en: '📺 Media Manipulation' }, 
     description: { zh: '每条推文能在市场上掀起多大风浪', en: 'How much market impact each tweet can create' }, 
-    maxValue: 10,
-    effect: { zh: '每点增加消息传播效果10%', en: '+10% message spread per point' } 
+    maxValue: 5,
+    effect: { zh: '每点增加消息传播效果20%', en: '+20% message spread per point' } 
   },
   { 
     id: 'businessIntuition', 
     name: { zh: '💰 商业嗅觉', en: '💰 Business Instinct' }, 
     description: { zh: '预判市场走向的野兽般直觉', en: 'Beast-like intuition for market trends' }, 
-    maxValue: 10,
-    effect: { zh: '每点增加投资成功率5%', en: '+5% investment success per point' } 
+    maxValue: 5,
+    effect: { zh: '每点增加投资成功率10%', en: '+10% investment success per point' } 
   },
   { 
     id: 'politicalConnections', 
     name: { zh: '🏛️ 政治人脉', en: '🏛️ Political Network' }, 
     description: { zh: '国会山走廊里有多少老朋友', en: 'How many old friends in Capitol Hill corridors' }, 
-    maxValue: 10,
+    maxValue: 5,
     effect: { zh: '解锁特殊幕后操作选项', en: 'Unlock special backroom deal options' } 
   },
   { 
     id: 'speechTalent', 
     name: { zh: '🎭 演讲魅力', en: '🎭 Oratory Charm' }, 
     description: { zh: '让民众相信"没人比我更懂"的能力', en: 'Ability to make people believe "nobody knows better"' }, 
-    maxValue: 10,
-    effect: { zh: '每点增加民众支持变化10%', en: '+10% prestige change per point' } 
+    maxValue: 5,
+    effect: { zh: '每点增加民众支持变化20%', en: '+20% prestige change per point' } 
   },
   { 
     id: 'secrecy', 
     name: { zh: '🔒 保密等级', en: '🔒 Secrecy Level' }, 
     description: { zh: '最好的交易是没人知道的交易', en: 'The best deals are the ones nobody knows about' }, 
-    maxValue: 10,
-    effect: { zh: '每点降低被发现概率10%', en: '-10% discovery chance per point' } 
+    maxValue: 5,
+    effect: { zh: '每点降低被发现概率20%', en: '-20% discovery chance per point' } 
   }
 ];
 
@@ -56,11 +56,12 @@ export const STORY_LEVELS: StoryLevel[] = [
     options: [
       { 
         id: 'insider-tip', 
+        title: { zh: '内幕交易', en: 'Insider Trading' },
         text: { 
           zh: '市场总会奖励那些有准备的人。我的高尔夫球友们似乎对经济很有研究，也许该听听他们的建议。', 
           en: 'The market always rewards those who are prepared. My golf buddies seem to know a lot about economics—perhaps I should hear them out.' 
         }, 
-        requirement: { attribute: 'mediaControl', minValue: 6 }, 
+        requirement: { attribute: 'mediaControl', minValue: 3 }, 
         results: { 
           assetsChange: 15000000, 
           prestigeChange: -12, 
@@ -74,11 +75,12 @@ export const STORY_LEVELS: StoryLevel[] = [
       },
       { 
         id: 'social-hint', 
+        title: { zh: '放风试探', en: 'Trial Hint' },
         text: { 
           zh: '有时候，最好的政策就是先听听民众的声音。当然，是用我自己的方式——在Truth Social上。', 
           en: 'Sometimes the best policy is to listen to the people first. In my own way, of course—on Truth Social.' 
         }, 
-        requirement: { attribute: 'mediaControl', minValue: 3 }, 
+        requirement: { attribute: 'mediaControl', minValue: 2 }, 
         results: { 
           assetsChange: 8000000, 
           prestigeChange: -6, 
@@ -92,6 +94,7 @@ export const STORY_LEVELS: StoryLevel[] = [
       },
       { 
         id: 'steady-approach', 
+        title: { zh: '稳重观望', en: 'Wait and See' },
         text: { 
           zh: '稳定是市场的基石。先让子弹飞一会儿，看看风向再说。总统这个位置，需要的是耐心。', 
           en: 'Stability is the cornerstone of markets. Let the dust settle first, see which way the wind blows. The presidency requires patience.' 

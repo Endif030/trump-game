@@ -20,24 +20,28 @@ export default function CharacterCreationV2() {
   const usedPoints = Object.values(attributes).reduce((a, b) => a + b, 0);
   const remainingPoints = TOTAL_ATTRIBUTE_POINTS - usedPoints;
 
-  const handleSliderChange = (attrId: string, value: number) => {
+  const handleIncrement = (attrId: string) => {
     const currentValue = attributes[attrId as keyof typeof attributes];
-    const diff = value - currentValue;
-    
-    if (diff > 0 && diff > remainingPoints) return;
-    
-    setAttrs(prev => ({ ...prev, [attrId]: value }));
+    if (currentValue < 5 && remainingPoints > 0) {
+      setAttrs(prev => ({ ...prev, [attrId]: currentValue + 1 }));
+    }
+  };
+
+  const handleDecrement = (attrId: string) => {
+    const currentValue = attributes[attrId as keyof typeof attributes];
+    if (currentValue > 0) {
+      setAttrs(prev => ({ ...prev, [attrId]: currentValue - 1 }));
+    }
   };
 
   const handleConfirm = () => {
-    // 计算启动资金：剩余点数 × 20万
     const initialFundsBonus = remainingPoints * 200000;
     setAttributes(attributes, initialFundsBonus);
   };
 
   const getBuildDescription = () => {
     const maxAttr = Object.entries(attributes).sort((a, b) => b[1] - a[1])[0];
-    if (maxAttr[1] < 5) return language === 'zh' ? '🎲 均衡发展型' : '🎲 Balanced Build';
+    if (maxAttr[1] < 3) return language === 'zh' ? '🎲 均衡发展型' : '🎲 Balanced Build';
     
     const descriptions: Record<string, { zh: string; en: string }> = {
       mediaControl: { zh: '📱 媒体操盘手', en: '📱 Media Manipulator' },
@@ -84,49 +88,77 @@ export default function CharacterCreationV2() {
           <p className="text-3xl font-bold text-green-400">${(5000000 + remainingPoints * 200000).toLocaleString()}</p>
         </div>
 
-        {/* Attribute Sliders */}
-        <div className="space-y-4 mb-8">
+        {/* Attribute Cards - 2x3 Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
           {ATTRIBUTE_OPTIONS.map((attr, index) => {
             const value = attributes[attr.id as keyof typeof attributes];
-            const canIncrease = remainingPoints > 0 && value < 10;
+            const canIncrease = value < 5 && remainingPoints > 0;
+            const canDecrease = value > 0;
             
             return (
               <motion.div 
                 key={attr.id} 
                 className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
-                initial={{ opacity: 0, x: -20 }} 
-                animate={{ opacity: 1, x: 0 }} 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <span className="font-bold text-white text-lg">{attr.name[language]}</span>
-                    <p className="text-white/60 text-sm">{attr.description[language]}</p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-lg font-bold ${
-                    value >= 8 ? 'bg-red-500 text-white' : 
-                    value >= 5 ? 'bg-yellow-500 text-red-900' : 
-                    'bg-white/20 text-white'
-                  }`}>{value} / 10</span>
+                <div className="text-center mb-3">
+                  <span className="font-bold text-white text-lg">{attr.name[language]}</span>
+                  <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
                 </div>
                 
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  value={value}
-                  onChange={(e) => handleSliderChange(attr.id, parseInt(e.target.value))}
-                  className="w-full h-3 bg-white/20 rounded-lg appearance-none cursor-pointer accent-yellow-400"
-                />
+                {/* +/- Controls */}
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <button
+                    onClick={() => handleDecrement(attr.id)}
+                    disabled={!canDecrease}
+                    className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                      canDecrease 
+                        ? 'bg-red-500 hover:bg-red-600 text-white' 
+                        : 'bg-white/10 text-white/30 cursor-not-allowed'
+                    }`}
+                  >
+                    −
+                  </button>
+                  
+                  <span className={`text-3xl font-black w-12 text-center ${
+                    value > 0 ? 'text-yellow-400' : 'text-white/40'
+                  }`}>
+                    {value}
+                  </span>
+                  
+                  <button
+                    onClick={() => handleIncrement(attr.id)}
+                    disabled={!canIncrease}
+                    className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                      canIncrease 
+                        ? 'bg-green-500 hover:bg-green-600 text-white' 
+                        : 'bg-white/10 text-white/30 cursor-not-allowed'
+                    }`}
+                  >
+                    +
+                  </button>
+                </div>
                 
-                <p className="text-yellow-400 text-xs mt-2">{attr.effect[language]}</p>
+                {/* Progress Bar - Solid when has value */}
+                <div className="w-full bg-white/20 rounded-full h-2">
+                  <div 
+                    className={`h-2 rounded-full transition-all ${
+                      value > 0 ? 'bg-yellow-400' : 'bg-transparent'
+                    }`} 
+                    style={{ width: `${(value / 5) * 100}%` }} 
+                  />
+                </div>
+                
+                <p className="text-yellow-400 text-xs mt-2 text-center">{attr.effect[language]}</p>
               </motion.div>
             );
           })}
         </div>
 
         {/* Build Type Indicator */}
-        {usedPoints > 10 && (
+        {usedPoints > 5 && (
           <motion.div
             className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-4 mb-6 text-center"
             initial={{ opacity: 0, scale: 0.9 }} 
@@ -140,7 +172,9 @@ export default function CharacterCreationV2() {
         {/* Warning if points remain */}
         {remainingPoints > 0 && (
           <div className="bg-yellow-500/20 border border-yellow-500 rounded-lg p-3 mb-6 text-center">
-            <p className="text-yellow-300 text-sm">⚠️ {language === 'zh' ? `还有 ${remainingPoints} 点未分配，将转化为启动资金` : `${remainingPoints} points unallocated, will convert to starting funds`}</p>
+            <p className="text-yellow-300 text-sm">
+              ⚠️ {language === 'zh' ? `还有 ${remainingPoints} 点未分配，将转化为启动资金` : `${remainingPoints} points unallocated, will convert to starting funds`}
+            </p>
           </div>
         )}
 
