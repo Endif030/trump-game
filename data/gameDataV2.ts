@@ -50,8 +50,8 @@ export const STORY_LEVELS: StoryLevel[] = [
     scene: { zh: '2025年2月，椭圆形办公室', en: 'February 2025, Oval Office' },
     backgroundImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80',
     background: { 
-      zh: '你的贸易顾问刚刚离开，留下一份标着"机密"的文件夹。你注意到，在正式公告前72小时，有几家进口商的期权交易量突然激增。窗外的华盛顿天色阴沉，就像市场即将到来的情绪。海湖庄园的高尔夫球友们昨晚似乎对经济政策特别感兴趣...', 
-      en: 'Your trade advisor just left, leaving a folder marked "Classified". You notice option trading volume for several importers surged 72 hours before any official announcement. Outside, Washington skies are as gloomy as the market sentiment to come. Your golf buddies at Mar-a-Lago seemed unusually interested in economic policy last night...' 
+      zh: '你的贸易顾问刚刚离开，留下一份标着"机密"的文件夹。\n\n你注意到，在正式公告前72小时，有几家进口商的期权交易量突然激增。窗外的华盛顿天色阴沉，就像市场即将到来的情绪。\n\n海湖庄园的高尔夫球友们昨晚似乎对经济政策特别感兴趣...', 
+      en: 'Your trade advisor just left, leaving a folder marked "Classified".\n\nYou notice option trading volume for several importers surged 72 hours before any official announcement. Outside, Washington skies are as gloomy as the market sentiment to come.\n\nYour golf buddies at Mar-a-Lago seemed unusually interested in economic policy last night...' 
     },
     options: [
       { 
@@ -119,12 +119,13 @@ export const STORY_LEVELS: StoryLevel[] = [
     scene: { zh: '2025年3月，海湖庄园', en: 'March 2025, Mar-a-Lago' },
     backgroundImage: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1920&q=80',
     background: { 
-      zh: '家族办公室的财务报表摆在桌上。你"恰好"注意到，就在国会讨论"美国战略比特币储备"法案的前一周，几个离岸账户的持仓结构发生了微妙变化。你的大儿子昨晚提到，某些加密行业领袖很愿意"支持总统的愿景"。', 
-      en: 'The family office financials are on the table. You "happen" to notice that just a week before Congress discusses the "US Strategic Bitcoin Reserve" bill, several offshore accounts subtly shifted positions. Your eldest mentioned last night that certain crypto leaders are eager to "support the President\'s vision".' 
+      zh: '家族办公室的财务报表摆在桌上。\n\n你"恰好"注意到，就在国会讨论"美国战略比特币储备"法案的前一周，几个离岸账户的持仓结构发生了微妙变化。\n\n你的大儿子昨晚提到，某些加密行业领袖很愿意"支持总统的愿景"。', 
+      en: 'The family office financials are on the table.\n\nYou "happen" to notice that just a week before Congress discusses the "US Strategic Bitcoin Reserve" bill, several offshore accounts subtly shifted positions.\n\nYour eldest mentioned last night that certain crypto leaders are eager to "support the President\'s vision".' 
     },
     options: [
       { 
         id: 'family-office', 
+        title: { zh: '公开支持', en: 'Public Support' },
         text: { 
           zh: '作为总统，我有责任让美国成为数字创新的领导者。这个愿景值得大力推广。', 
           en: 'As President, I have a duty to make America a digital innovation leader. This vision deserves strong promotion.' 
@@ -142,6 +143,7 @@ export const STORY_LEVELS: StoryLevel[] = [
       },
       { 
         id: 'behind-scenes', 
+        title: { zh: '幕后操作', en: 'Behind the Scenes' },
         text: { 
           zh: '真正的领导力往往在聚光灯之外。有些事，私下推动比公开表态更有效。', 
           en: 'True leadership often happens outside the spotlight. Some things work better when pushed privately than declared publicly.' 
@@ -159,6 +161,7 @@ export const STORY_LEVELS: StoryLevel[] = [
       },
       { 
         id: 'conflict-concern', 
+        title: { zh: '主动回避', en: 'Recuse Self' },
         text: { 
           zh: '总统的职位要求我把国家利益置于个人利益之上。这个法案，我需要回避。', 
           en: 'The presidency requires putting national interest above personal gain. On this bill, I must recuse myself.' 
@@ -183,17 +186,18 @@ export const STORY_LEVELS: StoryLevel[] = [
     scene: { zh: '2025年4月，美联储大楼会议室', en: 'April 2025, Federal Reserve Boardroom' },
     backgroundImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80',
     background: { 
-      zh: '鲍威尔再次拒绝降息。你看着他的眼睛，想起华尔街老友们最近的抱怨："如果市场预期降息，长债价格会很有意思。"你的财政部部长"恰好"是某债券交易巨头的校友。窗外的雨，像市场的眼泪，也像机会的前奏。', 
-      en: 'Powell refuses rate cuts again. You look into his eyes, recalling Wall Street friends\' recent complaints: "If markets expect cuts, long bonds could get interesting." Your Treasury Secretary "happens" to be alumni with a major bond trading house. The rain outside, like market tears, also like opportunity\'s prelude.' 
+      zh: '鲍威尔再次拒绝降息。\n\n你看着他的眼睛，想起华尔街老友们最近的抱怨："如果市场预期降息，长债价格会很有意思。"\n\n你的财政部部长"恰好"是某债券交易巨头的校友。窗外的雨，像市场的眼泪，也像机会的前奏。', 
+      en: 'Powell refuses rate cuts again.\n\nYou look into his eyes, recalling Wall Street friends\' recent complaints: "If markets expect cuts, long bonds could get interesting."\n\nYour Treasury Secretary "happens" to be alumni with a major bond trading house. The rain outside, like market tears, also like opportunity\'s prelude.' 
     },
     options: [
       { 
         id: 'pressure-play', 
+        title: { zh: '公开施压', en: 'Public Pressure' },
         text: { 
           zh: '总统有权表达自己的经济观点。鲍威尔需要听听来自宾夕法尼亚大街1600号的声音。', 
           en: 'The President has every right to express economic views. Powell needs to hear from 1600 Pennsylvania Avenue.' 
         }, 
-        requirement: { attribute: 'speechTalent', minValue: 6 }, 
+        requirement: { attribute: 'speechTalent', minValue: 3 }, 
         results: { 
           assetsChange: 20000000, 
           prestigeChange: -8, 
@@ -207,6 +211,7 @@ export const STORY_LEVELS: StoryLevel[] = [
       },
       { 
         id: 'dual-message', 
+        title: { zh: '双面策略', en: 'Dual Strategy' },
         text: { 
           zh: '公开场合，我尊重美联储的独立性。私下里嘛...老朋友们总是需要一些"指导"。', 
           en: 'Publicly, I respect Fed independence. Privately... old friends always need some "guidance".' 
@@ -224,6 +229,7 @@ export const STORY_LEVELS: StoryLevel[] = [
       },
       { 
         id: 'institutional-respect', 
+        title: { zh: '尊重制度', en: 'Respect Institution' },
         text: { 
           zh: '美联储的独立性是金融市场的基石。即使我不同意，也要尊重这个制度。', 
           en: 'Fed independence is the bedrock of financial markets. Even when I disagree, I must respect this institution.' 
