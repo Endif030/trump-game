@@ -1,11 +1,30 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../store/gameStoreV2';
 import { ATTRIBUTE_OPTIONS, TOTAL_ATTRIBUTE_POINTS } from '../data/gameDataV2';
 import TrumpAvatar from './TrumpAvatar';
 import BackToHome from './BackToHome';
+
+// 根据当前值计算实际效果
+function getEffectDescription(attr: any, value: number, language: 'zh' | 'en') {
+  if (value === 0) return language === 'zh' ? '无加成' : 'No bonus';
+  
+  const baseEffect = attr.effect[language];
+  // 提取数字部分
+  const match = baseEffect.match(/(\d+)%/);
+  if (match) {
+    const perPoint = parseInt(match[1]);
+    const totalEffect = perPoint * value;
+    if (language === 'zh') {
+      return `增加 ${totalEffect}% ${baseEffect.split('增加')[1]?.split('%')[1] || ''}`;
+    } else {
+      return `+${totalEffect}% effect`;
+    }
+  }
+  return baseEffect;
+}
 
 export default function CharacterCreationV2() {
   const { language, setAttributes } = useGameStore();
@@ -16,6 +35,7 @@ export default function CharacterCreationV2() {
     speechTalent: 0,
     secrecy: 0,
   });
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const usedPoints = Object.values(attributes).reduce((a, b) => a + b, 0);
   const remainingPoints = TOTAL_ATTRIBUTE_POINTS - usedPoints;
@@ -52,6 +72,16 @@ export default function CharacterCreationV2() {
     };
     
     return descriptions[maxAttr[0]]?.[language] || '';
+  };
+
+  // 获取确认弹窗的属性列表
+  const getSelectedAttributes = () => {
+    return ATTRIBUTE_OPTIONS.filter(attr => attributes[attr.id as keyof typeof attributes] > 0)
+      .map(attr => ({
+        name: attr.name[language],
+        value: attributes[attr.id as keyof typeof attributes],
+        effect: getEffectDescription(attr, attributes[attr.id as keyof typeof attributes], language)
+      }));
   };
 
   return (
@@ -142,7 +172,7 @@ export default function CharacterCreationV2() {
                 </div>
                 
                 {/* Progress Bar - Solid when has value */}
-                <div className="w-full bg-white/20 rounded-full h-2">
+                <div className="w-full bg-white/20 rounded-full h-2 mb-2">
                   <div 
                     className={`h-2 rounded-full transition-all ${
                       value > 0 ? 'bg-yellow-400' : 'bg-transparent'
@@ -151,14 +181,17 @@ export default function CharacterCreationV2() {
                   />
                 </div>
                 
-                <p className="text-yellow-400 text-xs mt-2 text-center">{attr.effect[language]}</p>
+                {/* Dynamic effect description */}
+                <p className={`text-xs mt-1 text-center font-semibold ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                  {getEffectDescription(attr, value, language)}
+                </p>
               </motion.div>
             );
           })}
         </div>
 
         {/* Build Type Indicator */}
-        {usedPoints > 5 && (
+        {usedPoints > 3 && (
           <motion.div
             className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-4 mb-6 text-center"
             initial={{ opacity: 0, scale: 0.9 }} 
@@ -169,18 +202,9 @@ export default function CharacterCreationV2() {
           </motion.div>
         )}
 
-        {/* Warning if points remain */}
-        {remainingPoints > 0 && (
-          <div className="bg-yellow-500/20 border border-yellow-500 rounded-lg p-3 mb-6 text-center">
-            <p className="text-yellow-300 text-sm">
-              ⚠️ {language === 'zh' ? `还有 ${remainingPoints} 点未分配，将转化为启动资金` : `${remainingPoints} points unallocated, will convert to starting funds`}
-            </p>
-          </div>
-        )}
-
         {/* Confirm Button */}
         <motion.button
-          onClick={handleConfirm}
+          onClick={() => setShowConfirm(true)}
           disabled={usedPoints === 0}
           className={`w-full py-4 rounded-xl font-bold text-xl transition-all ${
             usedPoints > 0
@@ -190,9 +214,69 @@ export default function CharacterCreationV2() {
           whileHover={usedPoints > 0 ? { scale: 1.02 } : {}}
           whileTap={usedPoints > 0 ? { scale: 0.98 } : {}}
         >
-          {language === 'zh' ? '开始我的总统生涯 🚀' : 'Start My Presidency 🚀'}
+          {language === 'zh' ? '确认并开始游戏 🚀' : 'Confirm & Start 🚀'}
         </motion.button>
       </div>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 max-w-md w-full border-2 border-yellow-400/50"
+            >
+              <h3 className="text-2xl font-bold text-yellow-400 mb-4 text-center">
+                {language === 'zh' ? '确认你的选择' : 'Confirm Your Selection'}
+              </h3>
+              
+              <div className="space-y-3 mb-6">
+                {getSelectedAttributes().map((attr, index) => (
+                  <div key={index} className="bg-white/10 rounded-lg p-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold">{attr.name}</span>
+                      <span className="text-yellow-400 font-bold">{attr.value} / 5</span>
+                    </div>
+                    <p className="text-yellow-400/80 text-sm mt-1">{attr.effect}</p>
+                  </div>
+                ))}
+                
+                {remainingPoints > 0 && (
+                  <div className="bg-green-500/20 rounded-lg p-3 border border-green-500/30">
+                    <p className="text-green-400 text-sm">
+                      {language === 'zh' 
+                        ? `剩余 ${remainingPoints} 点转化为启动资金: $${(remainingPoints * 200000).toLocaleString()}` 
+                        : `Remaining ${remainingPoints} points converted: $${(remainingPoints * 200000).toLocaleString()}`}
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowConfirm(false)}
+                  className="flex-1 py-3 rounded-xl bg-white/20 text-white font-bold hover:bg-white/30"
+                >
+                  {language === 'zh' ? '返回修改' : 'Go Back'}
+                </button>
+                <button
+                  onClick={handleConfirm}
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-red-900 font-bold"
+                >
+                  {language === 'zh' ? '确定开始 🚀' : 'Start Game 🚀'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

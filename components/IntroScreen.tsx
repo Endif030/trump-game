@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStoreV2';
-import { INTRO_TEXT } from '../data/endings';
+import { INTRO_TEXT } from '../data/endingsV2';
 import TrumpAvatar from './TrumpAvatar';
 
 export default function IntroScreen() {
@@ -27,11 +27,22 @@ export default function IntroScreen() {
           <p className="text-red-300 font-semibold">{t.warning}</p>
         </motion.div>
 
-        <motion.div className="bg-gradient-to-r from-yellow-500/20 to-amber-600/20 rounded-xl p-6 mb-8 border border-yellow-400">
-          <h3 className="text-xl font-bold text-yellow-300 mb-4">{t.goals.title}</h3>
-          <div className="space-y-3 text-left">
-            <div className="flex items-start gap-3"><span className="text-2xl">💰</span><p className="text-white">{t.goals.greedy}</p></div>
-            <div className="flex items-start gap-3"><span className="text-2xl">🕊️</span><p className="text-white">{t.goals.good}</p></div>
+        {/* 游戏目标 - 两个分开的格子 */}
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="bg-gradient-to-br from-yellow-600/30 to-amber-700/30 rounded-xl p-6 border-2 border-yellow-500/50">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-4xl">💰</span>
+              <h3 className="text-xl font-bold text-yellow-400">{language === 'zh' ? '贪婪总统' : 'Greedy President'}</h3>
+            </div>
+            <p className="text-white text-left">{language === 'zh' ? '任期内通过内幕交易赚取 1 万亿美元' : 'Make $1 TRILLION through insider trading during your term'}</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-blue-600/30 to-cyan-700/30 rounded-xl p-6 border-2 border-blue-500/50">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-4xl">🕊️</span>
+              <h3 className="text-xl font-bold text-blue-400">{language === 'zh' ? '人民总统' : 'People\'s President'}</h3>
+            </div>
+            <p className="text-white text-left">{language === 'zh' ? '卸任时获得 80%+ 民众支持率（且从未进行内幕交易）' : 'Leave office with 80%+ approval (without any insider trading)'}</p>
           </div>
         </motion.div>
 

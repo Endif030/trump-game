@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../store/gameStoreV2';
 import { STORY_LEVELS } from '../data/gameDataV2';
@@ -55,7 +55,7 @@ export default function StoryScreenV2() {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center text-white">
           <p className="text-xl mb-4">{language === 'zh' ? '游戏数据加载失败' : 'Game data failed to load'}</p>
-          <BackToHome position="bottom-center" />
+          <BackToHome position="bottom-right" />
         </div>
       </div>
     );
@@ -126,7 +126,6 @@ export default function StoryScreenV2() {
   // Calculate progress to victory
   const greedyProgress = Math.min(100, (assets / 1000000000000) * 100);
   const goodPresidentProgress = Math.min(100, (prestige / 80) * 100);
-  const isGoodPresidentRoute = goodPresidentPoints >= 2 || insiderTradingCount === 0;
 
   return (
     <div 
@@ -141,29 +140,40 @@ export default function StoryScreenV2() {
       
       <div className="relative z-10 p-4">
         <div className="max-w-4xl mx-auto">
-          {/* Stats Panel */}
-          <motion.div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" initial={{ y: -20 }} animate={{ y: 0 }}>
-            <div className="bg-gradient-to-br from-green-600 to-green-800 rounded-xl p-4 text-center">
-              <p className="text-green-200 text-xs mb-1">{language === 'zh' ? '资产' : 'Assets'}</p>
-              <p className="text-white font-mono font-bold text-sm md:text-base truncate">${assets.toLocaleString()}</p>
+          {/* Stats Panel - 修改后的标签 */}
+          <motion.div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6" initial={{ y: -20 }} animate={{ y: 0 }}>
+            {/* 我的资产 */}
+            <div className="bg-gradient-to-br from-green-600 to-green-800 rounded-xl p-3 text-center">
+              <p className="text-green-200 text-xs mb-1">{language === 'zh' ? '我的资产' : 'My Assets'}</p>
+              <p className="text-white font-mono font-bold text-sm truncate">${assets.toLocaleString()}</p>
             </div>
             
-            <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-4 text-center">
-              <p className="text-blue-200 text-xs mb-1">{language === 'zh' ? '威望' : 'Prestige'}</p>
+            {/* 总统威望 */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-3 text-center">
+              <p className="text-blue-200 text-xs mb-1">{language === 'zh' ? '总统威望' : 'Presidential Prestige'}</p>
               <p className="text-white font-bold text-lg">{prestige}%</p>
-              <div className="w-full bg-blue-900 rounded-full h-2 mt-2"><div className="bg-blue-300 h-2 rounded-full transition-all" style={{ width: `${prestige}%` }} /></div>
+              <div className="w-full bg-blue-900 rounded-full h-2 mt-1"><div className="bg-blue-300 h-2 rounded-full transition-all" style={{ width: `${prestige}%` }} /></div>
             </div>
             
-            <div className="bg-gradient-to-br from-red-600 to-red-800 rounded-xl p-4 text-center">
-              <p className="text-red-200 text-xs mb-1">{language === 'zh' ? '调查' : 'Investigation'}</p>
+            {/* 弹劾风险 */}
+            <div className="bg-gradient-to-br from-red-600 to-red-800 rounded-xl p-3 text-center">
+              <p className="text-red-200 text-xs mb-1">{language === 'zh' ? '弹劾风险' : 'Impeachment Risk'}</p>
               <p className="text-white font-bold text-lg">{investigation}%</p>
-              <div className="w-full bg-red-900 rounded-full h-2 mt-2"><div className="bg-red-300 h-2 rounded-full transition-all" style={{ width: `${investigation}%` }} /></div>
+              <div className="w-full bg-red-900 rounded-full h-2 mt-1"><div className="bg-red-300 h-2 rounded-full transition-all" style={{ width: `${investigation}%` }} /></div>
             </div>
             
-            <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-4 text-center">
-              <p className="text-purple-200 text-xs mb-1">{isGoodPresidentRoute ? (language === 'zh' ? '好总统进度' : 'Good President') : (language === 'zh' ? '贪婪进度' : 'Greedy Route')}</p>
-              <p className="text-white font-bold text-lg">{isGoodPresidentRoute ? goodPresidentProgress.toFixed(1) : greedyProgress.toFixed(1)}%</p>
-              <div className="w-full bg-purple-900 rounded-full h-2 mt-2"><div className={`h-2 rounded-full transition-all ${isGoodPresidentRoute ? 'bg-blue-300' : 'bg-yellow-300'}`} style={{ width: `${isGoodPresidentRoute ? goodPresidentProgress : greedyProgress}%` }} /></div>
+            {/* 民心所向 - 好总统路线 */}
+            <div className="bg-gradient-to-br from-cyan-600 to-blue-700 rounded-xl p-3 text-center">
+              <p className="text-cyan-200 text-xs mb-1">{language === 'zh' ? '民心所向' : 'People\'s Support'}</p>
+              <p className="text-white font-bold text-sm">{goodPresidentProgress.toFixed(1)}%</p>
+              <div className="w-full bg-blue-900 rounded-full h-2 mt-1"><div className="bg-cyan-300 h-2 rounded-full transition-all" style={{ width: `${goodPresidentProgress}%` }} /></div>
+            </div>
+            
+            {/* 贪婪成性 - 贪婪路线 */}
+            <div className="bg-gradient-to-br from-yellow-600 to-orange-700 rounded-xl p-3 text-center">
+              <p className="text-yellow-200 text-xs mb-1">{language === 'zh' ? '贪婪成性' : 'Greed Progress'}</p>
+              <p className="text-white font-bold text-sm">{greedyProgress.toFixed(1)}%</p>
+              <div className="w-full bg-orange-900 rounded-full h-2 mt-1"><div className="bg-yellow-300 h-2 rounded-full transition-all" style={{ width: `${greedyProgress}%` }} /></div>
             </div>
           </motion.div>
 
@@ -218,13 +228,13 @@ export default function StoryScreenV2() {
                 <h3 className="text-2xl font-bold text-yellow-400 mb-4 text-center">{language === 'zh' ? '决策结果' : 'Decision Result'}</h3>
                 
                 {/* 步骤 0: 剧情描述 */}
-                {resultStep >= 0 && (
+                {resultStep >= 0 && lastResult && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     className="text-white text-lg mb-6 text-center bg-black/30 rounded-xl p-4"
                   >
-                    {lastResult?.description}
+                    {lastResult.description}
                   </motion.div>
                 )}
                 
@@ -235,7 +245,7 @@ export default function StoryScreenV2() {
                     animate={{ opacity: 1, y: 0 }} 
                     className={`mb-4 p-4 rounded-xl ${lastResult.assetsChange >= 0 ? 'bg-green-500/30' : 'bg-red-500/30'}`}
                   >
-                    <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '资产变化' : 'Assets'}</p>
+                    <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '我的资产' : 'My Assets'}</p>
                     <div className="flex justify-center items-center gap-4 flex-wrap">
                       <p className="text-white text-lg">${prevAssets.toLocaleString()}</p>
                       <span className={`text-2xl font-bold ${lastResult.assetsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -255,7 +265,7 @@ export default function StoryScreenV2() {
                     animate={{ opacity: 1, y: 0 }} 
                     className={`mb-4 p-4 rounded-xl ${lastResult.prestigeChange >= 0 ? 'bg-blue-500/30' : 'bg-red-500/30'}`}
                   >
-                    <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '威望变化' : 'Prestige'}</p>
+                    <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '总统威望' : 'Presidential Prestige'}</p>
                     <div className="flex justify-center items-center gap-4">
                       <p className="text-white text-lg">{prevPrestige}%</p>
                       <span className={`text-2xl font-bold ${lastResult.prestigeChange >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
@@ -268,14 +278,14 @@ export default function StoryScreenV2() {
                   </motion.div>
                 )}
                 
-                {/* 步骤 3: 调查风险 */}
+                {/* 步骤 3: 弹劾风险 */}
                 {resultStep >= 3 && lastResult && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     className={`mb-4 p-4 rounded-xl ${lastResult.investigationChange > 0 ? 'bg-red-500/30' : 'bg-green-500/30'}`}
                   >
-                    <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '调查风险' : 'Investigation Risk'}</p>
+                    <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '弹劾风险' : 'Impeachment Risk'}</p>
                     <div className="flex justify-center items-center gap-4">
                       <p className="text-white text-lg">{prevInvestigation}%</p>
                       <span className={`text-2xl font-bold ${lastResult.investigationChange > 0 ? 'text-red-400' : 'text-green-400'}`}>
