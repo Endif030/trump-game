@@ -167,11 +167,11 @@ export default function CharacterCreationV2() {
           <p className="text-red-800 text-sm">/ {TOTAL_ATTRIBUTE_POINTS} pts</p>
         </motion.div>
 
-        {/* Attribute Cards - 2 columns layout */}
+        {/* Attribute Cards - 2 columns: left 2x2, right political spans 2 rows */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          {/* Left column: first 3 attributes */}
-          <div className="space-y-4">
-            {otherAttrs.slice(0, 3).map((attr, index) => {
+          {/* Left column: 4 attributes in 2x2 grid */}
+          <div className="grid grid-cols-2 gap-4">
+            {otherAttrs.map((attr, index) => {
               const value = attributes[attr.id as keyof typeof attributes];
               const canIncrease = value < 5 && remainingPoints > 0;
               const canDecrease = value > 0;
@@ -180,8 +180,8 @@ export default function CharacterCreationV2() {
                 <motion.div 
                   key={attr.id} 
                   className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
-                  initial={{ opacity: 0, x: -20 }} 
-                  animate={{ opacity: 1, x: 0 }} 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
                   transition={{ delay: index * 0.1 }}
                 >
                   <div className="text-center mb-2">
@@ -241,145 +241,74 @@ export default function CharacterCreationV2() {
             })}
           </div>
 
-          {/* Right column: last 2 attributes + political connections */}
-          <div className="space-y-4">
-            {otherAttrs.slice(3).map((attr, index) => {
-              const value = attributes[attr.id as keyof typeof attributes];
-              const canIncrease = value < 5 && remainingPoints > 0;
-              const canDecrease = value > 0;
+          {/* Right column: Political Connections - spans full height */}
+          {politicalAttr && (
+            <motion.div 
+              className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 flex flex-col justify-center"
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ delay: 0.3 }}
+            >
+              <div className="text-center mb-4">
+                <span className="font-bold text-white text-xl">{politicalAttr.name[language]}</span>
+                <p className="text-white/60 text-sm mt-2">{politicalAttr.description[language]}</p>
+              </div>
               
-              return (
-                <motion.div 
-                  key={attr.id} 
-                  className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
-                  initial={{ opacity: 0, x: 20 }} 
-                  animate={{ opacity: 1, x: 0 }} 
-                  transition={{ delay: index * 0.1 }}
+              {/* Binary Toggle */}
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <button
+                  onClick={() => handleDecrement('politicalConnections', true)}
+                  disabled={attributes.politicalConnections === 0}
+                  className={`w-12 h-12 rounded-full font-bold text-2xl flex items-center justify-center transition-all ${
+                    attributes.politicalConnections > 0 
+                      ? 'bg-red-500 hover:bg-red-600 text-white' 
+                      : 'bg-white/10 text-white/30 cursor-not-allowed'
+                  }`}
                 >
-                  <div className="text-center mb-2">
-                    <span className="font-bold text-white text-lg">{attr.name[language]}</span>
-                    <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
-                  </div>
-                  
-                  {/* +/- Controls */}
-                  <div className="flex items-center justify-center gap-3 mb-2">
-                    <button
-                      onClick={() => handleDecrement(attr.id, false)}
-                      disabled={!canDecrease}
-                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                        canDecrease 
-                          ? 'bg-red-500 hover:bg-red-600 text-white' 
-                          : 'bg-white/10 text-white/30 cursor-not-allowed'
-                      }`}
-                    >
-                      −
-                    </button>
-                    
-                    <span className={`text-3xl font-black w-12 text-center ${
-                      value > 0 ? 'text-yellow-400' : 'text-white/40'
-                    }`}>
-                      {value}
-                    </span>
-                    
-                    <button
-                      onClick={() => handleIncrement(attr.id, false)}
-                      disabled={!canIncrease}
-                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                        canIncrease 
-                          ? 'bg-green-500 hover:bg-green-600 text-white' 
-                          : 'bg-white/10 text-white/30 cursor-not-allowed'
-                      }`}
-                    >
-                      +
-                    </button>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="w-full bg-white/20 rounded-full h-2 mb-2">
-                    <div 
-                      className={`h-2 rounded-full transition-all ${
-                        value > 0 ? 'bg-yellow-400' : 'bg-transparent'
-                      }`} 
-                      style={{ width: `${(value / 5) * 100}%` }} 
-                    />
-                  </div>
-                  
-                  {/* Dynamic effect description */}
-                  <p className={`text-xs mt-1 text-center font-semibold ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
-                    {getEffectDescription(attr, value, language)}
-                  </p>
-                </motion.div>
-              );
-            })}
-            
-            {/* Political Connections - Binary choice, spans full width of right column */}
-            {politicalAttr && (
-              <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
-                initial={{ opacity: 0, x: 20 }} 
-                animate={{ opacity: 1, x: 0 }} 
-                transition={{ delay: 0.3 }}
-              >
-                <div className="text-center mb-2">
-                  <span className="font-bold text-white text-lg">{politicalAttr.name[language]}</span>
-                  <p className="text-white/60 text-xs mt-1">{politicalAttr.description[language]}</p>
-                </div>
+                  −
+                </button>
                 
-                {/* Binary Toggle */}
-                <div className="flex items-center justify-center gap-3 mb-2">
-                  <button
-                    onClick={() => handleDecrement('politicalConnections', true)}
-                    disabled={attributes.politicalConnections === 0}
-                    className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                      attributes.politicalConnections > 0 
-                        ? 'bg-red-500 hover:bg-red-600 text-white' 
-                        : 'bg-white/10 text-white/30 cursor-not-allowed'
-                    }`}
-                  >
-                    −
-                  </button>
-                  
-                  <span className={`text-3xl font-black w-12 text-center ${
-                    attributes.politicalConnections > 0 ? 'text-yellow-400' : 'text-white/40'
-                  }`}>
-                    {attributes.politicalConnections > 0 ? '✓' : '−'}
-                  </span>
-                  
-                  <button
-                    onClick={() => handleIncrement('politicalConnections', true)}
-                    disabled={attributes.politicalConnections > 0 || remainingPoints < 5}
-                    className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                      attributes.politicalConnections === 0 && remainingPoints >= 5
-                        ? 'bg-green-500 hover:bg-green-600 text-white' 
-                        : 'bg-white/10 text-white/30 cursor-not-allowed'
-                    }`}
-                  >
-                    +
-                  </button>
-                </div>
+                <span className={`text-4xl font-black w-16 text-center ${
+                  attributes.politicalConnections > 0 ? 'text-yellow-400' : 'text-white/40'
+                }`}>
+                  {attributes.politicalConnections > 0 ? '✓' : '−'}
+                </span>
                 
-                {/* Progress Bar - Full or empty */}
-                <div className="w-full bg-white/20 rounded-full h-2 mb-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${
-                      attributes.politicalConnections > 0 ? 'bg-yellow-400' : 'bg-transparent'
-                    }`} 
-                    style={{ width: attributes.politicalConnections > 0 ? '100%' : '0%' }} 
-                  />
-                </div>
-                
-                {/* Effect description */}
-                <p className={`text-xs mt-1 text-center font-semibold ${attributes.politicalConnections > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
-                  {attributes.politicalConnections > 0 
-                    ? politicalAttr.effect[language] 
-                    : (language === 'zh' ? '未解锁' : 'Locked')}
-                </p>
-                <p className="text-white/50 text-xs text-center mt-1">
-                  {language === 'zh' ? '(消耗 5 点)' : '(Costs 5 points)'}
-                </p>
-              </motion.div>
-            )}
-          </div>
+                <button
+                  onClick={() => handleIncrement('politicalConnections', true)}
+                  disabled={attributes.politicalConnections > 0 || remainingPoints < 5}
+                  className={`w-12 h-12 rounded-full font-bold text-2xl flex items-center justify-center transition-all ${
+                    attributes.politicalConnections === 0 && remainingPoints >= 5
+                      ? 'bg-green-500 hover:bg-green-600 text-white' 
+                      : 'bg-white/10 text-white/30 cursor-not-allowed'
+                  }`}
+                >
+                  +
+                </button>
+              </div>
+              
+              {/* Progress Bar - Full or empty */}
+              <div className="w-full bg-white/20 rounded-full h-3 mb-4">
+                <div 
+                  className={`h-3 rounded-full transition-all ${
+                    attributes.politicalConnections > 0 ? 'bg-yellow-400' : 'bg-transparent'
+                  }`} 
+                  style={{ width: attributes.politicalConnections > 0 ? '100%' : '0%' }} 
+                />
+              </div>
+              
+              {/* Effect description */}
+              <p className={`text-sm text-center font-semibold mb-2 ${attributes.politicalConnections > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                {attributes.politicalConnections > 0 
+                  ? politicalAttr.effect[language] 
+                  : (language === 'zh' ? '未解锁' : 'Locked')}
+              </p>
+              
+              <p className="text-white/50 text-sm text-center">
+                {language === 'zh' ? '(消耗 5 点)' : '(Costs 5 points)'}
+              </p>
+            </motion.div>
+          )}
         </div>
 
         {/* Build Type Indicator */}
