@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
 2:I[47257,["/trump-game/_next/static/chunks/0dbhjjzl8qfwv.js"],"ClientPageRoot"]
-3:I[31713,["/trump-game/_next/static/chunks/0dbhjjzl8qfwv.js","/trump-game/_next/static/chunks/0jx-ec1j89qy7.js"],"default"]
+3:I[31713,["/trump-game/_next/static/chunks/0dbhjjzl8qfwv.js","/trump-game/_next/static/chunks/0pcqifibqjvpj.js"],"default"]
 6:I[97367,["/trump-game/_next/static/chunks/0dbhjjzl8qfwv.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/trump-game/_next/static/chunks/0jx-ec1j89qy7.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"4Lq2gFF7rb_1ET4s1E_Uc"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/trump-game/_next/static/chunks/0pcqifibqjvpj.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fxefEVqXHt5d-30EYdvPU"}
 4:{}
 5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
 8:null
