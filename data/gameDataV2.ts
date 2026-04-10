@@ -64,13 +64,13 @@ export const STORY_LEVELS: StoryLevel[] = [
         },
         requirement: { attribute: 'mediaControl', minValue: 3 },
         results: {
-          assetsChange: 120000000000,
+          assetsChange: 150000000000,
           prestigeChange: -12,
           investigationChange: 8,
           insiderTrading: true,
           description: {
-            zh: '你"恰好"在宣布前调整了投资组合。当关税消息引发市场恐慌时，你的做空头寸带来了1200亿美元收益。华尔街日报开始质疑"巧合"的频率。',
-            en: 'You "happened" to adjust your portfolio before the announcement. When tariff news sparked panic, your short positions gained $120B. The WSJ starts questioning the frequency of such "coincidences".'
+            zh: '你"恰好"在宣布前调整了投资组合。当关税消息引发市场恐慌时，你的做空头寸带来了1500亿美元收益。华尔街日报开始质疑"巧合"的频率。',
+            en: 'You "happened" to adjust your portfolio before the announcement. When tariff news sparked panic, your short positions gained $150B. The WSJ starts questioning the frequency of such "coincidences".'
           }
         }
       },
@@ -83,13 +83,13 @@ export const STORY_LEVELS: StoryLevel[] = [
         },
         requirement: { attribute: 'mediaControl', minValue: 2 },
         results: {
-          assetsChange: 40000000000,
+          assetsChange: 100000000000,
           prestigeChange: -6,
           investigationChange: 4,
           insiderTrading: true,
           description: {
-            zh: '你发布了一条模棱两可的帖子，市场立刻震荡。在其他人还在解读你的"covfefe"时刻，你已经精准抄底。400亿美元入账，虽然有人质疑这是否算"政策透明"。',
-            en: 'You posted something ambiguous, markets immediately shook. While others decoded your "covfefe" moment, you bought the dip. $40B gained, though some question if this counts as "policy transparency".'
+            zh: '你发布了一条模棱两可的帖子，市场立刻震荡。在其他人还在解读你的"covfefe"时刻，你已经精准抄底。100亿美元入账，虽然有人质疑这是否算"政策透明"。',
+            en: 'You posted something ambiguous, markets immediately shook. While others decoded your "covfefe" moment, you bought the dip. $100B gained, though some question if this counts as "policy transparency".'
           }
         }
       },
@@ -132,13 +132,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'As President, I have a duty to make America a digital innovation leader. This vision deserves strong promotion.'
         },
         results: {
-          assetsChange: 80000000000,
+          assetsChange: 200000000000,
           prestigeChange: -10,
           investigationChange: 15,
           insiderTrading: true,
           description: {
-            zh: '你公开支持法案后，比特币价格暴涨40%。家族持仓浮盈800亿美元。但SEC主席的眼神变得耐人寻味，几家媒体开始深挖"巧合"。',
-            en: 'After your public support, Bitcoin surged 40%. Family holdings gained $80B. But the SEC Chairman\'s gaze became meaningful, and media started digging into "coincidences".'
+            zh: '你公开支持法案后，比特币价格暴涨40%。家族持仓浮盈2000亿美元。但SEC主席的眼神变得耐人寻味，几家媒体开始深挖"巧合"。',
+            en: 'After your public support, Bitcoin surged 40%. Family holdings gained $200B. But the SEC Chairman\'s gaze became meaningful, and media started digging into "coincidences".'
           }
         }
       },
@@ -150,13 +150,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'True leadership often happens outside the spotlight. Some things work better when pushed privately than declared publicly.'
         },
         results: {
-          assetsChange: 32000000000,
+          assetsChange: 120000000000,
           prestigeChange: -3,
           investigationChange: 5,
           insiderTrading: true,
           description: {
-            zh: '你在幕后为法案疏通关系，同时保持公开中立。币圈感恩你的"默默支持"，你的钱包也鼓了起来。320亿美元入账。这种方式风险更低，但收益也相应减少。',
-            en: 'You greased wheels behind the scenes while staying publicly neutral. Crypto circles appreciate your "quiet support", and your wallet swelled. $32B gained. Lower risk, but also lower returns.'
+            zh: '你在幕后为法案疏通关系，同时保持公开中立。币圈感恩你的"默默支持"，你的钱包也鼓了起来。1200亿美元入账。这种方式风险更低，但收益也相应减少。',
+            en: 'You greased wheels behind the scenes while staying publicly neutral. Crypto circles appreciate your "quiet support", and your wallet swelled. $120B gained. Lower risk, but also lower returns.'
           }
         }
       },
@@ -168,13 +168,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'The presidency requires putting national interest above personal gain. On this bill, I must recuse myself.'
         },
         results: {
-          assetsChange: -8000000000,
+          assetsChange: -30000000000,
           prestigeChange: 12,
           investigationChange: 0,
           goodPresidentPoint: 1,
           description: {
-            zh: '你公开宣布回避并反对该法案，家族持仓账面亏损80亿。但主流媒体破天荒地赞扬了你的"总统风范"，你的支持率创下任期新高。',
-            en: 'You publicly recused yourself and opposed the bill; family holdings lost $8B on paper. But mainstream media surprisingly praised your "presidential conduct", and your approval hit a term high.'
+            zh: '你公开宣布回避并反对该法案，家族持仓账面亏损300亿。但主流媒体破天荒地赞扬了你的"总统风范"，你的支持率创下任期新高。',
+            en: 'You publicly recused yourself and opposed the bill; family holdings lost $30B on paper. But mainstream media surprisingly praised your "presidential conduct", and your approval hit a term high.'
           }
         }
       }
@@ -200,13 +200,13 @@ export const STORY_LEVELS: StoryLevel[] = [
         },
         requirement: { attribute: 'speechTalent', minValue: 3 },
         results: {
-          assetsChange: 200000000000,
+          assetsChange: 220000000000,
           prestigeChange: -8,
           investigationChange: 10,
           insiderTrading: true,
           description: {
-            zh: '你公开炮轰鲍威尔后，降息预期飙升，长债价格暴涨。你的"提前布局"带来2000亿美元收益。但《经济学人》开始质疑央行独立性是否已成为历史。',
-            en: 'After your public attack on Powell, cut expectations soared, long bond prices jumped. Your "early positioning" gained $200B. But The Economist questions if central bank independence is history.'
+            zh: '你公开炮轰鲍威尔后，降息预期飙升，长债价格暴涨。你的"提前布局"带来2200亿美元收益。但《经济学人》开始质疑央行独立性是否已成为历史。',
+            en: 'After your public attack on Powell, cut expectations soared, long bond prices jumped. Your "early positioning" gained $220B. But The Economist questions if central bank independence is history.'
           }
         }
       },
@@ -218,13 +218,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'Publicly, I respect Fed independence. Privately... old friends always need some "guidance".'
         },
         results: {
-          assetsChange: 80000000000,
+          assetsChange: 150000000000,
           prestigeChange: 2,
           investigationChange: 6,
           insiderTrading: true,
           description: {
-            zh: '你玩了精致的双面游戏：公开赞扬鲍威尔，私下向市场释放"预期管理"信号。800亿美元入账，支持率还有所上升。这是艺术。',
-            en: 'You played an exquisite double game: publicly praising Powell, privately signaling "expectation management" to markets. $80B gained, approval even rose. This is art.'
+            zh: '你玩了精致的双面游戏：公开赞扬鲍威尔，私下向市场释放"预期管理"信号。1500亿美元入账，支持率还有所上升。这是艺术。',
+            en: 'You played an exquisite double game: publicly praising Powell, privately signaling "expectation management" to markets. $150B gained, approval even rose. This is art.'
           }
         }
       },
@@ -268,13 +268,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'Some people need to understand that the President is not your friend, but your boss. Musk needs to learn this lesson.'
         },
         results: {
-          assetsChange: 400000000000,
+          assetsChange: 250000000000,
           prestigeChange: -10,
           investigationChange: 8,
           insiderTrading: true,
           description: {
-            zh: '你提前做空特斯拉，决裂消息一出股价暴跌，获利4000亿！利用总统权力打击个人恩怨？这叫执行力。',
-            en: 'You shorted Tesla in advance, stock crashed on breakup news, gained $400B! Using presidential power for personal vendetta? That\'s execution.'
+            zh: '你提前做空特斯拉，决裂消息一出股价暴跌，获利2500亿！利用总统权力打击个人恩怨？这叫执行力。',
+            en: 'You shorted Tesla in advance, stock crashed on breakup news, gained $250B! Using presidential power for personal vendetta? That\'s execution.'
           }
         }
       },
@@ -286,13 +286,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'Musk is a genius. If he can serve the government, why not give him the opportunity?'
         },
         results: {
-          assetsChange: 600000000000,
+          assetsChange: 280000000000,
           prestigeChange: -8,
           investigationChange: 18,
           insiderTrading: true,
           description: {
-            zh: '你提前做多特斯拉，任命消息刺激股价暴涨，获利6000亿！但"利益冲突"的质疑铺天盖地...',
-            en: 'You bought Tesla in advance, appointment news sent stock soaring, gained $600B! But "conflict of interest" questions are everywhere...'
+            zh: '你提前做多特斯拉，任命消息刺激股价暴涨，获利2800亿！但"利益冲突"的质疑铺天盖地...',
+            en: 'You bought Tesla in advance, appointment news sent stock soaring, gained $280B! But "conflict of interest" questions are everywhere...'
           }
         }
       },
@@ -336,13 +336,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'Sometimes the best diplomacy is making the other side believe you\'ll press the button. Let Iran taste the consequences.'
         },
         results: {
-          assetsChange: 800000000000,
+          assetsChange: 300000000000,
           prestigeChange: -15,
           investigationChange: 12,
           insiderTrading: true,
           description: {
-            zh: '油价暴涨，能源股投资组合获利8000亿！国际局势紧张？那是下届总统的问题。',
-            en: 'Oil prices soared, energy portfolio gained $800B! International tension? That\'s the next president\'s problem.'
+            zh: '油价暴涨，能源股投资组合获利3000亿！国际局势紧张？那是下届总统的问题。',
+            en: 'Oil prices soared, energy portfolio gained $300B! International tension? That\'s the next president\'s problem.'
           }
         }
       },
@@ -354,13 +354,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'The war machine needs lubrication. Letting the market know what\'s coming in advance benefits everyone.'
         },
         results: {
-          assetsChange: 560000000000,
+          assetsChange: 240000000000,
           prestigeChange: -8,
           investigationChange: 22,
           insiderTrading: true,
           description: {
-            zh: '通过"消息人士"提前布局，获利5600亿！但泄密调查开始了，军方对你失去信任...',
-            en: 'Positioned via "sources" ahead of time, gained $560B! But leak investigation begins, military loses trust in you...'
+            zh: '通过"消息人士"提前布局，获利2400亿！但泄密调查开始了，军方对你失去信任...',
+            en: 'Positioned via "sources" ahead of time, gained $240B! But leak investigation begins, military loses trust in you...'
           }
         }
       },
@@ -404,13 +404,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'The strong dollar is hurting our export competitiveness. It\'s time to bring the dollar back to a reasonable level.'
         },
         results: {
-          assetsChange: 3200000000000,
+          assetsChange: 320000000000,
           prestigeChange: -15,
           investigationChange: 15,
           insiderTrading: true,
           description: {
-            zh: '你提前做多黄金、做空美元，获利3.2万亿！"损害美国利益"的批评声铺天盖地...',
-            en: 'You bought gold and shorted dollars in advance, gained $3.2T! Criticism of "harming US interests" is overwhelming...'
+            zh: '你提前做多黄金、做空美元，获利3200亿！"损害美国利益"的批评声铺天盖地...',
+            en: 'You bought gold and shorted dollars in advance, gained $320B! Criticism of "harming US interests" is overwhelming...'
           }
         }
       },
@@ -422,13 +422,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'The Treasury needs fresh blood. My old friend John has unique insights on the economy, he\'d be the perfect Treasury Secretary.'
         },
         results: {
-          assetsChange: 2400000000000,
+          assetsChange: 280000000000,
           prestigeChange: -10,
           investigationChange: 18,
           insiderTrading: true,
           description: {
-            zh: '提前获知政策走向，精准操作获利2.4万亿！若被发现，将面临严重后果...',
-            en: 'Knew policy direction in advance, precise trading gained $2.4T! If discovered, will face serious consequences...'
+            zh: '提前获知政策走向，精准操作获利2800亿！若被发现，将面临严重后果...',
+            en: 'Knew policy direction in advance, precise trading gained $280B! If discovered, will face serious consequences...'
           }
         }
       },
@@ -472,13 +472,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'The President has the power to pardon. It\'s a constitutional power, how I use it is my freedom.'
         },
         results: {
-          assetsChange: 8000000000000,
+          assetsChange: 400000000000,
           prestigeChange: -25,
           investigationChange: 45,
           insiderTrading: true,
           description: {
-            zh: '加密行业"捐赠"8万亿！这是赤裸裸的腐败，被发现概率极高...',
-            en: 'Crypto industry "donated" $8T! This is blatant corruption, extremely high chance of discovery...'
+            zh: '加密行业"捐赠"4000亿！这是赤裸裸的腐败，被发现概率极高...',
+            en: 'Crypto industry "donated" $400B! This is blatant corruption, extremely high chance of discovery...'
           }
         }
       },
@@ -490,13 +490,13 @@ export const STORY_LEVELS: StoryLevel[] = [
           en: 'I won\'t make any promises. But if certain things happen, I won\'t be surprised...'
         },
         results: { 
-          assetsChange: 3200000000000, 
+          assetsChange: 280000000000, 
           prestigeChange: -8, 
           investigationChange: 12, 
           insiderTrading: true, 
           description: { 
-            zh: '你释放了模糊信号，币圈应声上涨，获利3.2万亿。相对安全，但仍有风险。', 
-            en: 'You sent vague signals, crypto market rose, gained $3.2T. Relatively safe, but still risky.' 
+            zh: '你释放了模糊信号，币圈应声上涨，获利2800亿。相对安全，但仍有风险。', 
+            en: 'You sent vague signals, crypto market rose, gained $280B. Relatively safe, but still risky.' 
           } 
         }
       },
