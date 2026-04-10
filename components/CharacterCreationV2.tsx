@@ -228,7 +228,7 @@ export default function CharacterCreationV2() {
           {/* Right: Political Connections - spans 2 rows */}
           {politicalAttr && (
             <motion.div 
-              className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 flex flex-col justify-center row-span-2"
+              className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 flex flex-col justify-center self-stretch"
               initial={{ opacity: 0, x: 20 }} 
               animate={{ opacity: 1, x: 0 }} 
               transition={{ delay: 0.3 }}
