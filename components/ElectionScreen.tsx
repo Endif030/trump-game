@@ -2,9 +2,10 @@
 
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useGameStore } from '../store/gameStore';
-import { ELECTION_CHECKS } from '../data/gameData';
+import { useGameStore } from '../store/gameStoreV2';
+import { ELECTION_CHECKS } from '../data/gameDataV2';
 import TrumpAvatar from './TrumpAvatar';
+import BackToHome from './BackToHome';
 
 export default function ElectionScreen() {
   const { language, currentLevel, prestige, triggerElection, nextLevel, setEnding } = useGameStore();
@@ -30,7 +31,10 @@ export default function ElectionScreen() {
   const getExpression = () => result === 'success' ? 'triumphant' : result === 'warning' ? 'surprised' : 'defeated';
 
   return (
-    <motion.div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-slate-900 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <motion.div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-slate-900 flex items-center justify-center p-4 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      {/* Back to Home Button */}
+      <BackToHome position="top-right" />
+      
       <motion.div className="max-w-2xl w-full bg-white/10 backdrop-blur-md rounded-2xl p-8 border-2 border-white/20 text-center" initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
         <motion.div className="inline-block bg-yellow-500 text-red-900 font-black text-2xl px-6 py-2 rounded-full mb-6">{election.year} {language === 'zh' ? '年中期选举' : 'Midterm Election'}</motion.div>
         <div className="flex justify-center mb-6"><TrumpAvatar size="xl" expression={getExpression()} /></div>

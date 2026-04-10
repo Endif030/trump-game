@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGameStore } from '../store/gameStore';
+import { useGameStore } from '../store/gameStoreV2';
 import { STORY_LEVELS } from '../data/gameDataV2';
 import TrumpAvatar from './TrumpAvatar';
+import BackToHome from './BackToHome';
 
 export default function StoryScreenV2() {
   const { 
@@ -65,6 +66,9 @@ export default function StoryScreenV2() {
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/75" />
+      
+      {/* Back to Home Button */}
+      <BackToHome position="top-right" />
       
       <div className="relative z-10 p-4">
         <div className="max-w-4xl mx-auto">

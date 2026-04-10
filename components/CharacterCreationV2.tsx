@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useGameStore } from '../store/gameStore';
+import { useGameStore } from '../store/gameStoreV2';
 import { ATTRIBUTE_OPTIONS, TOTAL_ATTRIBUTE_POINTS } from '../data/gameDataV2';
 import TrumpAvatar from './TrumpAvatar';
+import BackToHome from './BackToHome';
 
 export default function CharacterCreationV2() {
   const { language, setAttributes } = useGameStore();
@@ -58,6 +59,9 @@ export default function CharacterCreationV2() {
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/70" />
+      
+      {/* Back to Home Button */}
+      <BackToHome position="top-right" />
       
       <div className="relative z-10 max-w-4xl mx-auto p-4">
         {/* Header */}
