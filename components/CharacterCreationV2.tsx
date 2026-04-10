@@ -56,7 +56,6 @@ export default function CharacterCreationV2() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const usedPoints = Object.entries(attributes).reduce((total, [id, value]) => {
-    // 政治人脉是二元选择，值为5时消耗5点
     if (id === 'politicalConnections') {
       return total + (value > 0 ? 5 : 0);
     }
@@ -69,12 +68,10 @@ export default function CharacterCreationV2() {
     const currentValue = attributes[attrId as keyof typeof attributes];
     
     if (isBinary) {
-      // 二元选择：0 -> 5
       if (currentValue === 0 && remainingPoints >= 5) {
         setAttrs(prev => ({ ...prev, [attrId]: 5 }));
       }
     } else {
-      // 正常递增
       if (currentValue < 5 && remainingPoints > 0) {
         setAttrs(prev => ({ ...prev, [attrId]: currentValue + 1 }));
       }
@@ -85,12 +82,10 @@ export default function CharacterCreationV2() {
     const currentValue = attributes[attrId as keyof typeof attributes];
     
     if (isBinary) {
-      // 二元选择：5 -> 0
       if (currentValue > 0) {
         setAttrs(prev => ({ ...prev, [attrId]: 0 }));
       }
     } else {
-      // 正常递减
       if (currentValue > 0) {
         setAttrs(prev => ({ ...prev, [attrId]: currentValue - 1 }));
       }
@@ -117,7 +112,6 @@ export default function CharacterCreationV2() {
     return descriptions[maxAttr[0]]?.[language] || '';
   };
 
-  // 获取确认弹窗的属性列表
   const getSelectedAttributes = () => {
     return ATTRIBUTE_OPTIONS.filter(attr => attributes[attr.id as keyof typeof attributes] > 0)
       .map(attr => ({
@@ -127,14 +121,17 @@ export default function CharacterCreationV2() {
       }));
   };
 
+  // 分离政治人脉
+  const politicalAttr = ATTRIBUTE_OPTIONS.find(a => a.id === 'politicalConnections');
+  const otherAttrs = ATTRIBUTE_OPTIONS.filter(a => a.id !== 'politicalConnections');
+  const isPoliticalUnlocked = attributes.politicalConnections > 0;
+
   return (
     <motion.div 
       className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 relative"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }}
     >
-      
-      {/* Back to Home Button */}
       <BackToHome position="top-right" />
       
       <div className="relative z-10 max-w-5xl mx-auto p-4">
@@ -145,7 +142,7 @@ export default function CharacterCreationV2() {
           <p className="text-white/70">{language === 'zh' ? '海湖庄园，就职前夜。分配你的政治资本。' : 'Mar-a-Lago, eve of inauguration. Allocate your political capital.'}</p>
         </motion.div>
 
-        {/* Starting Funds - Moved to top */}
+        {/* Starting Funds */}
         <motion.div className="bg-white/10 backdrop-blur-md rounded-lg p-4 mb-4 text-center border border-white/20"
           initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
         >
@@ -160,93 +157,133 @@ export default function CharacterCreationV2() {
           <p className="text-red-800 text-sm">/ {TOTAL_ATTRIBUTE_POINTS} pts</p>
         </motion.div>
 
-        {/* Attribute Cards - 3 columns grid */}
+        {/* Attribute Grid - Left 2x2, Right political spans 2 rows */}
         <div className="grid grid-cols-3 gap-4 mb-6">
-          {ATTRIBUTE_OPTIONS.map((attr, index) => {
-            const value = attributes[attr.id as keyof typeof attributes];
-            const isBinary = attr.id === 'politicalConnections';
-            const isUnlocked = value > 0;
-            
-            // 正常属性：0-5
-            const canIncreaseNormal = !isBinary && value < 5 && remainingPoints > 0;
-            const canDecreaseNormal = !isBinary && value > 0;
-            
-            // 二元属性：0 或 5
-            const canIncreaseBinary = isBinary && !isUnlocked && remainingPoints >= 5;
-            const canDecreaseBinary = isBinary && isUnlocked;
-            
-            return (
-              <motion.div 
-                key={attr.id} 
-                className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: index * 0.1 }}
-              >
-                <div className="text-center mb-2">
-                  <span className="font-bold text-white text-lg">{attr.name[language]}</span>
-                  <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
-                </div>
-                
-                {/* +/- Controls */}
-                <div className="flex items-center justify-center gap-3 mb-2">
-                  <button
-                    onClick={() => handleDecrement(attr.id, isBinary)}
-                    disabled={isBinary ? !canDecreaseBinary : !canDecreaseNormal}
-                    className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                      (isBinary ? canDecreaseBinary : canDecreaseNormal)
-                        ? 'bg-red-500 hover:bg-red-600 text-white' 
-                        : 'bg-white/10 text-white/30 cursor-not-allowed'
-                    }`}
-                  >
-                    −
-                  </button>
+          
+          {/* Left: 4 attributes in 2x2 */}
+          <div className="col-span-2 grid grid-cols-2 gap-4">
+            {otherAttrs.map((attr, index) => {
+              const value = attributes[attr.id as keyof typeof attributes];
+              const canIncrease = value < 5 && remainingPoints > 0;
+              const canDecrease = value > 0;
+              
+              return (
+                <motion.div 
+                  key={attr.id} 
+                  className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20"
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="text-center mb-2">
+                    <span className="font-bold text-white text-lg">{attr.name[language]}</span>
+                    <p className="text-white/60 text-xs mt-1">{attr.description[language]}</p>
+                  </div>
                   
-                  <span className={`text-3xl font-black w-12 text-center ${
-                    isUnlocked ? 'text-yellow-400' : 'text-white/40'
-                  }`}>
-                    {isBinary ? (isUnlocked ? '✓' : '−') : value}
-                  </span>
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <button
+                      onClick={() => handleDecrement(attr.id, false)}
+                      disabled={!canDecrease}
+                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                        canDecrease 
+                          ? 'bg-red-500 hover:bg-red-600 text-white' 
+                          : 'bg-white/10 text-white/30 cursor-not-allowed'
+                      }`}
+                    >
+                      −
+                    </button>
+                    
+                    <span className={`text-3xl font-black w-12 text-center ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                      {value}
+                    </span>
+                    
+                    <button
+                      onClick={() => handleIncrement(attr.id, false)}
+                      disabled={!canIncrease}
+                      className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                        canIncrease 
+                          ? 'bg-green-500 hover:bg-green-600 text-white' 
+                          : 'bg-white/10 text-white/30 cursor-not-allowed'
+                      }`}
+                    >
+                      +
+                    </button>
+                  </div>
                   
-                  <button
-                    onClick={() => handleIncrement(attr.id, isBinary)}
-                    disabled={isBinary ? !canIncreaseBinary : !canIncreaseNormal}
-                    className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
-                      (isBinary ? canIncreaseBinary : canIncreaseNormal)
-                        ? 'bg-green-500 hover:bg-green-600 text-white' 
-                        : 'bg-white/10 text-white/30 cursor-not-allowed'
-                    }`}
-                  >
-                    +
-                  </button>
-                </div>
-                
-                {/* Progress Bar */}
-                <div className="w-full bg-white/20 rounded-full h-2 mb-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${
-                      isUnlocked ? 'bg-yellow-400' : 'bg-transparent'
-                    }`} 
-                    style={{ width: isBinary ? (isUnlocked ? '100%' : '0%') : `${(value / 5) * 100}%` }} 
-                  />
-                </div>
-                
-                {/* Dynamic effect description */}
-                <p className={`text-xs mt-1 text-center font-semibold ${isUnlocked ? 'text-yellow-400' : 'text-white/40'}`}>
-                  {isBinary 
-                    ? (isUnlocked ? attr.effect[language] : (language === 'zh' ? '未解锁' : 'Locked'))
-                    : getEffectDescription(attr, value, language)
-                  }
-                </p>
-                
-                {isBinary && (
-                  <p className="text-white/50 text-xs text-center mt-1">
-                    {language === 'zh' ? '(消耗 5 点)' : '(Costs 5 points)'}
+                  <div className="w-full bg-white/20 rounded-full h-2 mb-2">
+                    <div 
+                      className={`h-2 rounded-full transition-all ${value > 0 ? 'bg-yellow-400' : 'bg-transparent'}`} 
+                      style={{ width: `${(value / 5) * 100}%` }} 
+                    />
+                  </div>
+                  
+                  <p className={`text-xs mt-1 text-center font-semibold ${value > 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                    {getEffectDescription(attr, value, language)}
                   </p>
-                )}
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Right: Political Connections - spans 2 rows */}
+          {politicalAttr && (
+            <motion.div 
+              className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 flex flex-col justify-center row-span-2"
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ delay: 0.3 }}
+            >
+              <div className="text-center mb-3">
+                <span className="font-bold text-white text-lg">{politicalAttr.name[language]}</span>
+                <p className="text-white/60 text-xs mt-1">{politicalAttr.description[language]}</p>
+              </div>
+              
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <button
+                  onClick={() => handleDecrement('politicalConnections', true)}
+                  disabled={!isPoliticalUnlocked}
+                  className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                    isPoliticalUnlocked 
+                      ? 'bg-red-500 hover:bg-red-600 text-white' 
+                      : 'bg-white/10 text-white/30 cursor-not-allowed'
+                  }`}
+                >
+                  −
+                </button>
+                
+                <span className={`text-3xl font-black w-12 text-center ${isPoliticalUnlocked ? 'text-yellow-400' : 'text-white/40'}`}>
+                  {isPoliticalUnlocked ? '✓' : '−'}
+                </span>
+                
+                <button
+                  onClick={() => handleIncrement('politicalConnections', true)}
+                  disabled={isPoliticalUnlocked || remainingPoints < 5}
+                  className={`w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition-all ${
+                    !isPoliticalUnlocked && remainingPoints >= 5
+                      ? 'bg-green-500 hover:bg-green-600 text-white' 
+                      : 'bg-white/10 text-white/30 cursor-not-allowed'
+                  }`}
+                >
+                  +
+                </button>
+              </div>
+              
+              <div className="w-full bg-white/20 rounded-full h-2 mb-3">
+                <div 
+                  className={`h-2 rounded-full transition-all ${isPoliticalUnlocked ? 'bg-yellow-400' : 'bg-transparent'}`} 
+                  style={{ width: isPoliticalUnlocked ? '100%' : '0%' }} 
+                />
+              </div>
+              
+              <p className={`text-sm text-center font-semibold mb-2 ${isPoliticalUnlocked ? 'text-yellow-400' : 'text-white/40'}`}>
+                {isPoliticalUnlocked ? politicalAttr.effect[language] : (language === 'zh' ? '未解锁' : 'Locked')}
+              </p>
+              
+              <p className="text-white/50 text-xs text-center">
+                {language === 'zh' ? '(消耗 5 点)' : '(Costs 5 points)'}
+              </p>
+            </motion.div>
+          )}
         </div>
 
         {/* Build Type Indicator */}
