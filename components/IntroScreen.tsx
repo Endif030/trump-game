@@ -21,28 +21,33 @@ export default function IntroScreen() {
         <motion.h1 className="text-5xl md:text-7xl font-black text-yellow-400 mb-2" style={{ textShadow: '3px 3px 0 #DC143C' }} initial={{ scale: 0.5 }} animate={{ scale: 1 }}>{t.title}</motion.h1>
         <p className="text-xl text-white/80 mb-8">{t.subtitle}</p>
 
-        <motion.div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-8 border-2 border-yellow-400/50">
+        <motion.div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-6">
           <p className="text-2xl font-bold text-yellow-300 mb-4">{t.welcome}</p>
           <p className="text-white text-lg mb-4">{t.description}</p>
           <p className="text-red-300 font-semibold">{t.warning}</p>
         </motion.div>
 
+        {/* 游戏结局标题 */}
+        <h2 className="text-2xl font-bold text-yellow-400 text-center mb-4">
+          {language === 'zh' ? '🎯 游戏结局' : '🎯 Game Endings'}
+        </h2>
+
         {/* 游戏目标 - 两个分开的格子 */}
         <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="bg-gradient-to-br from-yellow-600/30 to-amber-700/30 rounded-xl p-6 border-2 border-yellow-500/50">
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center justify-center gap-3 mb-3">
               <span className="text-4xl">💰</span>
               <h3 className="text-xl font-bold text-yellow-400">{language === 'zh' ? '贪婪总统' : 'Greedy President'}</h3>
             </div>
-            <p className="text-white text-left">{language === 'zh' ? '任期内通过内幕交易赚取 1 万亿美元' : 'Make $1 TRILLION through insider trading during your term'}</p>
+            <p className="text-white text-center">{language === 'zh' ? '任期内通过内幕交易赚取 1 万亿美元' : 'Make $1 TRILLION through insider trading during your term'}</p>
           </div>
           
           <div className="bg-gradient-to-br from-blue-600/30 to-cyan-700/30 rounded-xl p-6 border-2 border-blue-500/50">
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center justify-center gap-3 mb-3">
               <span className="text-4xl">🕊️</span>
               <h3 className="text-xl font-bold text-blue-400">{language === 'zh' ? '人民总统' : 'People\'s President'}</h3>
             </div>
-            <p className="text-white text-left">{language === 'zh' ? '卸任时获得 80%+ 民众支持率（且从未进行内幕交易）' : 'Leave office with 80%+ approval (without any insider trading)'}</p>
+            <p className="text-white text-center">{language === 'zh' ? '卸任时获得 80%+ 民众支持率（且从未进行内幕交易）' : 'Leave office with 80%+ approval (without any insider trading)'}</p>
           </div>
         </motion.div>
 

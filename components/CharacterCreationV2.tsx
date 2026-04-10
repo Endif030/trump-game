@@ -129,13 +129,10 @@ export default function CharacterCreationV2() {
 
   return (
     <motion.div 
-      className="min-h-screen bg-cover bg-center bg-fixed relative"
-      style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=1920&q=80)' }}
+      className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 relative"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/70" />
       
       {/* Back to Home Button */}
       <BackToHome position="top-right" />
