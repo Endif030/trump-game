@@ -58,15 +58,15 @@ export default function CharacterCreation() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {ATTRIBUTE_OPTIONS.map((attr, index) => {
             const isSelected = !!selectedAttrs[attr.id];
-            const canAfford = remainingPoints >= attr.cost || isSelected;
+            const canAfford = remainingPoints >= (attr.cost || 0) || isSelected;
             return (
-              <motion.button key={attr.id} onClick={() => toggleAttribute(attr.id, attr.cost)} disabled={!canAfford}
+              <motion.button key={attr.id} onClick={() => toggleAttribute(attr.id, attr.cost || 0)} disabled={!canAfford}
                 className={`p-4 rounded-xl border-2 text-left ${isSelected ? 'bg-yellow-400/20 border-yellow-400' : canAfford ? 'bg-white/5 border-white/20' : 'bg-white/5 border-white/10 opacity-50'}`}
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}
               >
                 <div className="flex justify-between items-start mb-2">
                   <span className="font-bold text-white">{attr.name[language]}</span>
-                  <span className={`px-2 py-1 rounded-full text-sm font-bold ${isSelected ? 'bg-yellow-400 text-red-900' : 'bg-white/20 text-white'}`}>{attr.cost} pts</span>
+                  <span className={`px-2 py-1 rounded-full text-sm font-bold ${isSelected ? 'bg-yellow-400 text-red-900' : 'bg-white/20 text-white'}`}>{attr.cost || 0} pts</span>
                 </div>
                 <p className="text-white/60 text-sm mb-2">{attr.description[language]}</p>
                 <p className="text-yellow-400 text-xs font-semibold">{attr.effect[language]}</p>

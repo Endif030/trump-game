@@ -33,7 +33,7 @@ export default function EndingScreen() {
   const getExpression = () => {
     switch (endingType) {
       case 'greedy': return 'smug';
-      case 'goodPresident': return 'happy';
+      case 'goodPresident': return 'triumphant';
       case 'arrested': return 'surprised';
       case 'impeached': return 'angry';
       case 'doubleFace': return 'smug';

@@ -27,7 +27,7 @@ export default function ElectionScreen() {
     else nextLevel();
   };
 
-  const getExpression = () => result === 'success' ? 'happy' : result === 'warning' ? 'surprised' : 'angry';
+  const getExpression = () => result === 'success' ? 'triumphant' : result === 'warning' ? 'surprised' : 'defeated';
 
   return (
     <motion.div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-slate-900 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

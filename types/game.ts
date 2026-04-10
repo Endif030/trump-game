@@ -41,7 +41,8 @@ export interface AttributeOption {
   id: string;
   name: { zh: string; en: string };
   description: { zh: string; en: string };
-  cost: number;
+  cost?: number;
+  maxValue?: number;
   effect: { zh: string; en: string };
 }
 
@@ -50,6 +51,7 @@ export interface StoryLevel {
   chapter: number;
   title: { zh: string; en: string };
   scene: { zh: string; en: string };
+  backgroundImage?: string;
   background: { zh: string; en: string };
   options: StoryOption[];
 }
@@ -88,6 +90,7 @@ export interface Ending {
   description: { zh: string; en: string };
   rating: string;
   achievement: { zh: string; en: string };
+  backgroundImage?: string;
   shareTexts: { text: { zh: string; en: string }; meme: boolean }[];
   bgColor: string;
 }
