@@ -39,7 +39,7 @@ export const ATTRIBUTE_OPTIONS: AttributeOption[] = [
   }
 ];
 
-export const TOTAL_ATTRIBUTE_POINTS = 35;
+export const TOTAL_ATTRIBUTE_POINTS = 18;
 
 // 含蓄双关风格的故事关卡
 export const STORY_LEVELS: StoryLevel[] = [
@@ -242,6 +242,278 @@ export const STORY_LEVELS: StoryLevel[] = [
           description: { 
             zh: '你没有干预货币政策。华尔街分析师们震惊地在报告中写下："特朗普尊重了央行独立性。"你的支持率稳步上升，虽然账户没有。', 
             en: 'You didn\'t interfere with monetary policy. Wall Street analysts shockingly wrote in reports: "Trump respected central bank independence." Your approval rose steadily, though your account didn\'t.' 
+          } 
+        } 
+      }
+    ]
+  },
+  // 第4关：马斯克交易
+  {
+    id: 'musk-deal', 
+    chapter: 2, 
+    title: { zh: '马斯克交易 🤝💔', en: 'The Musk Deal 🤝💔' },
+    scene: { zh: '2026年初，X总部', en: 'Early 2026, X Headquarters' },
+    backgroundImage: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1920&q=80',
+    background: { 
+      zh: '马斯克又发推了。他说要"重新考虑"对政府合同的支持。特斯拉股价应声下跌。\n\n等等...你们上周不是还一起打高尔夫吗？\n\n你记得当时他"不经意"提到他最近在看哪些股票...', 
+      en: 'Musk tweeted again. He said he\'d "reconsider" government contract support. Tesla stock dropped immediately.\n\nWait... didn\'t you golf together last week?\n\nYou remember him "casually" mentioning which stocks he\'s been watching lately...' 
+    },
+    options: [
+      { 
+        id: 'public-breakup', 
+        title: { zh: '公开决裂', en: 'Public Breakup' },
+        text: { 
+          zh: '有些人需要明白，总统不是你的朋友，而是你的老板。马斯克需要学习这一点。', 
+          en: 'Some people need to understand that the President is not your friend, but your boss. Musk needs to learn this lesson.' 
+        }, 
+        results: { 
+          assetsChange: 25000000, 
+          prestigeChange: -10, 
+          investigationChange: 8, 
+          insiderTrading: true, 
+          description: { 
+            zh: '你提前做空特斯拉，决裂消息一出股价暴跌，获利2500万！利用总统权力打击个人恩怨？这叫执行力。', 
+            en: 'You shorted Tesla in advance, stock crashed on breakup news, gained $25M! Using presidential power for personal vendetta? That\'s execution.' 
+          } 
+        } 
+      },
+      { 
+        id: 'efficiency-dept', 
+        title: { zh: '任命部长', en: 'Appoint Secretary' },
+        text: { 
+          zh: '马斯克是个天才。如果他能为政府效力，为什么不给他这个机会呢？', 
+          en: 'Musk is a genius. If he can serve the government, why not give him the opportunity?' 
+        }, 
+        results: { 
+          assetsChange: 30000000, 
+          prestigeChange: -8, 
+          investigationChange: 18, 
+          insiderTrading: true, 
+          description: { 
+            zh: '你提前做多特斯拉，任命消息刺激股价暴涨，获利3000万！但"利益冲突"的质疑铺天盖地...', 
+            en: 'You bought Tesla in advance, appointment news sent stock soaring, gained $30M! But "conflict of interest" questions are everywhere...' 
+          } 
+        } 
+      },
+      { 
+        id: 'professional-distance', 
+        title: { zh: '保持距离', en: 'Keep Distance' },
+        text: { 
+          zh: '商业就是商业，政治就是政治。总统不应该和亿万富翁走得太近。', 
+          en: 'Business is business, politics is politics. The President shouldn\'t get too close to billionaires.' 
+        }, 
+        results: { 
+          assetsChange: 0, 
+          prestigeChange: 6, 
+          investigationChange: 0, 
+          goodPresidentPoint: 1, 
+          description: { 
+            zh: '你拒绝了利用马斯克的影响力。华尔街松了口气，但你错过了赚钱机会。', 
+            en: 'You refused to exploit Musk\'s influence. Wall Street breathes easy, but you missed the profit opportunity.' 
+          } 
+        } 
+      }
+    ]
+  },
+  // 第5关：战争边缘
+  {
+    id: 'war-edge', 
+    chapter: 2, 
+    title: { zh: '战争边缘 🚀', en: 'Edge of War 🚀' },
+    scene: { zh: '2026年中，五角大楼战情室', en: 'Mid-2026, Pentagon War Room' },
+    backgroundImage: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&q=80',
+    background: { 
+      zh: '伊朗核设施的情报摆在桌上。军事打击可以"解决问题"，但也会推高油价。\n\n你看着自己的能源股投资组合...\n\n国防部长提醒你有72小时的时间窗口。', 
+      en: 'Intel on Iranian nuclear facilities is on the table. Military strikes could "solve the problem," but would also spike oil prices.\n\nYou look at your energy stock portfolio...\n\nThe Defense Secretary reminds you of a 72-hour window.' 
+    },
+    options: [
+      { 
+        id: 'war-threat', 
+        title: { zh: '战争威胁', en: 'War Threat' },
+        text: { 
+          zh: '有时候，最好的外交就是让对方相信你会按下按钮。让伊朗尝尝后果。', 
+          en: 'Sometimes the best diplomacy is making the other side believe you\'ll press the button. Let Iran taste the consequences.' 
+        }, 
+        results: { 
+          assetsChange: 35000000, 
+          prestigeChange: -15, 
+          investigationChange: 12, 
+          insiderTrading: true, 
+          description: { 
+            zh: '油价暴涨，能源股投资组合获利3500万！国际局势紧张？那是下届总统的问题。', 
+            en: 'Oil prices soared, energy portfolio gained $35M! International tension? That\'s the next president\'s problem.' 
+          } 
+        } 
+      },
+      { 
+        id: 'leak-plan', 
+        title: { zh: '泄露计划', en: 'Leak Plans' },
+        text: { 
+          zh: '战争机器需要润滑剂。让市场提前知道会发生什么，对大家都有好处。', 
+          en: 'The war machine needs lubrication. Letting the market know what\'s coming in advance benefits everyone.' 
+        }, 
+        results: { 
+          assetsChange: 28000000, 
+          prestigeChange: -8, 
+          investigationChange: 22, 
+          insiderTrading: true, 
+          description: { 
+            zh: '通过"消息人士"提前布局，获利2800万！但泄密调查开始了，军方对你失去信任...', 
+            en: 'Positioned via "sources" ahead of time, gained $28M! But leak investigation begins, military loses trust in you...' 
+          } 
+        } 
+      },
+      { 
+        id: 'diplomacy', 
+        title: { zh: '外交斡旋', en: 'Diplomacy' },
+        text: { 
+          zh: '战争永远是最后的手段。让我们先谈谈，看看能不能找到共同点。', 
+          en: 'War is always the last resort. Let\'s talk first and see if we can find common ground.' 
+        }, 
+        results: { 
+          assetsChange: 0, 
+          prestigeChange: 15, 
+          investigationChange: 0, 
+          goodPresidentPoint: 1, 
+          description: { 
+            zh: '你选择了和平。诺贝尔和平奖提名正在路上，虽然你没赚到钱。', 
+            en: 'You chose peace. Nobel Peace Prize nomination is on the way, though you didn\'t make money.' 
+          } 
+        } 
+      }
+    ]
+  },
+  // 第6关：美元危机
+  {
+    id: 'dollar-crisis', 
+    chapter: 2, 
+    title: { zh: '美元危机 💵', en: 'Dollar Crisis 💵' },
+    scene: { zh: '2027年，财政部', en: '2027, Treasury Department' },
+    backgroundImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80',
+    background: { 
+      zh: '美元霸权地位动摇，人民币正在崛起。如果你能让美元贬值，黄金和新兴市场资产会暴涨...\n\n你的私人银行家在瑞士等你电话。\n\n财政部部长今天的简报"恰好"提到了货币政策的可能调整。', 
+      en: 'Dollar hegemony is shaking, RMB is rising. If you could weaken the dollar, gold and emerging market assets would soar...\n\nYour private banker in Switzerland is waiting for your call.\n\nThe Treasury Secretary\'s briefing today "happened" to mention possible monetary policy adjustments.' 
+    },
+    options: [
+      { 
+        id: 'weak-dollar', 
+        title: { zh: '弱美元政策', en: 'Weak Dollar Policy' },
+        text: { 
+          zh: '强势美元伤害了我们的出口竞争力。是时候让美元回归合理价位了。', 
+          en: 'The strong dollar is hurting our export competitiveness. It\'s time to bring the dollar back to a reasonable level.' 
+        }, 
+        results: { 
+          assetsChange: 40000000, 
+          prestigeChange: -15, 
+          investigationChange: 15, 
+          insiderTrading: true, 
+          description: { 
+            zh: '你提前做多黄金、做空美元，获利4000万！"损害美国利益"的批评声铺天盖地...', 
+            en: 'You bought gold and shorted dollars in advance, gained $40M! Criticism of "harming US interests" is overwhelming...' 
+          } 
+        } 
+      },
+      { 
+        id: 'appoint-crony', 
+        title: { zh: '安插亲信', en: 'Appoint Crony' },
+        text: { 
+          zh: '财政部需要新鲜血液。我的老朋友约翰对经济有独到见解，他会是完美的财政部长。', 
+          en: 'The Treasury needs fresh blood. My old friend John has unique insights on the economy, he\'d be the perfect Treasury Secretary.' 
+        }, 
+        results: { 
+          assetsChange: 32000000, 
+          prestigeChange: -10, 
+          investigationChange: 18, 
+          insiderTrading: true, 
+          description: { 
+            zh: '提前获知政策走向，精准操作获利3200万！若被发现，将面临严重后果...', 
+            en: 'Knew policy direction in advance, precise trading gained $32M! If discovered, will face serious consequences...' 
+          } 
+        } 
+      },
+      { 
+        id: 'strong-dollar', 
+        title: { zh: '维护强美元', en: 'Defend Strong Dollar' },
+        text: { 
+          zh: '美元是世界储备货币，这是我们的超级武器。我不会为了一己私利放弃这个优势。', 
+          en: 'The dollar is the world\'s reserve currency, that\'s our superweapon. I won\'t give up this advantage for personal gain.' 
+        }, 
+        results: { 
+          assetsChange: 0, 
+          prestigeChange: 10, 
+          investigationChange: 0, 
+          goodPresidentPoint: 1, 
+          description: { 
+            zh: '你维护了美元地位。华尔街为你鼓掌，虽然你的账户没有增长。', 
+            en: 'You defended dollar status. Wall Street applauds you, though your account didn\'t grow.' 
+          } 
+        } 
+      }
+    ]
+  },
+  // 第7关：最后的大单
+  {
+    id: 'final-deal', 
+    chapter: 3, 
+    title: { zh: '最后的大单 🎯', en: 'The Final Deal 🎯' },
+    scene: { zh: '2028年末，白宫', en: 'Late 2028, White House' },
+    backgroundImage: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1920&q=80',
+    background: { 
+      zh: '任期即将结束。某加密货币交易所CEO面临终身监禁，他的律师联系了你：\n\n一笔巨额"捐款"，换一个赦免承诺。\n\n这是最后的机会...你的政治遗产，还是你的钱包？', 
+      en: 'Term almost over. A crypto exchange CEO faces life in prison. His lawyer contacted you:\n\nA massive "donation" for a pardon promise.\n\nThis is the last chance... your political legacy, or your wallet?' 
+    },
+    options: [
+      { 
+        id: 'accept-bribe', 
+        title: { zh: '接受贿赂', en: 'Accept Bribe' },
+        text: { 
+          zh: '总统有权赦免。这是宪法赋予的权力，怎么使用是我的自由。', 
+          en: 'The President has the power to pardon. It\'s a constitutional power, how I use it is my freedom.' 
+        }, 
+        results: { 
+          assetsChange: 80000000, 
+          prestigeChange: -25, 
+          investigationChange: 45, 
+          insiderTrading: true, 
+          description: { 
+            zh: '加密行业"捐赠"8000万！这是赤裸裸的腐败，被发现概率极高...', 
+            en: 'Crypto industry "donated" $80M! This is blatant corruption, extremely high chance of discovery...' 
+          } 
+        } 
+      },
+      { 
+        id: 'imply-pardon', 
+        title: { zh: '暗示赦免', en: 'Hint at Pardon' },
+        text: { 
+          zh: '我不会做出任何承诺。但如果某些事情发生，我也不会感到意外...', 
+          en: 'I won\'t make any promises. But if certain things happen, I won\'t be surprised...' 
+        }, 
+        results: { 
+          assetsChange: 35000000, 
+          prestigeChange: -8, 
+          investigationChange: 12, 
+          insiderTrading: true, 
+          description: { 
+            zh: '你释放了模糊信号，币圈应声上涨，获利3500万。相对安全，但仍有风险。', 
+            en: 'You sent vague signals, crypto market rose, gained $35M. Relatively safe, but still risky.' 
+          } 
+        } 
+      },
+      { 
+        id: 'refuse-interfere', 
+        title: { zh: '拒绝干预', en: 'Refuse to Interfere' },
+        text: { 
+          zh: '司法独立是美国制度的基石。我不会干预司法程序，即使这意味着失去一笔钱。', 
+          en: 'Judicial independence is the cornerstone of the American system. I won\'t interfere with judicial proceedings, even if it means losing money.' 
+        }, 
+        results: { 
+          assetsChange: 0, 
+          prestigeChange: 15, 
+          investigationChange: 0, 
+          goodPresidentPoint: 1, 
+          description: { 
+            zh: '你拒绝了最后的诱惑。司法部对你刮目相看，虽然你错过了最后的暴富机会。', 
+            en: 'You resisted the final temptation. DOJ looks at you differently, though you missed the final jackpot.' 
           } 
         } 
       }

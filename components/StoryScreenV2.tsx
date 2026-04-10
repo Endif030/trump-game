@@ -79,23 +79,41 @@ export default function StoryScreenV2() {
       if (attrValue < option.requirement.minValue) return;
     }
     
-    // 保存选择前的数值
-    setPrevAssets(assets);
-    setPrevPrestige(prestige);
-    setPrevInvestigation(investigation);
+    // 先保存当前值（选择前的值）
+    const currentAssets = assets;
+    const currentPrestige = prestige;
+    const currentInvestigation = investigation;
     
     const result = option.results;
+    
+    // 计算新值
+    const newAssetsVal = Math.max(0, currentAssets + result.assetsChange);
+    const newPrestigeVal = Math.min(100, Math.max(0, currentPrestige + result.prestigeChange));
+    const newInvestigationVal = Math.min(100, Math.max(0, currentInvestigation + result.investigationChange));
+    
+    // 保存用于显示
+    setPrevAssets(currentAssets);
+    setPrevPrestige(currentPrestige);
+    setPrevInvestigation(currentInvestigation);
+    
+    // 更新状态
     makeChoice(level.id, option.id, result);
-    setLastResult({ ...result, description: result.description[language] });
+    setLastResult({ 
+      ...result, 
+      description: result.description[language],
+      _calculatedNewAssets: newAssetsVal,
+      _calculatedNewPrestige: newPrestigeVal,
+      _calculatedNewInvestigation: newInvestigationVal
+    });
     setShowResult(true);
     setResultStep(0);
     
     // 自动推进步骤
-    setTimeout(() => setResultStep(1), 1000);
-    setTimeout(() => setResultStep(2), 2000);
-    setTimeout(() => setResultStep(3), 3000);
+    setTimeout(() => setResultStep(1), 800);
+    setTimeout(() => setResultStep(2), 1600);
+    setTimeout(() => setResultStep(3), 2400);
     if (result.insiderTrading) {
-      setTimeout(() => setResultStep(4), 4000);
+      setTimeout(() => setResultStep(4), 3200);
     }
   };
 
@@ -109,11 +127,6 @@ export default function StoryScreenV2() {
   const greedyProgress = Math.min(100, (assets / 1000000000000) * 100);
   const goodPresidentProgress = Math.min(100, (prestige / 80) * 100);
   const isGoodPresidentRoute = goodPresidentPoints >= 2 || insiderTradingCount === 0;
-
-  // 计算新值
-  const newAssets = assets + (lastResult?.assetsChange || 0);
-  const newPrestige = prestige + (lastResult?.prestigeChange || 0);
-  const newInvestigation = investigation + (lastResult?.investigationChange || 0);
 
   return (
     <div 
@@ -216,67 +229,67 @@ export default function StoryScreenV2() {
                 )}
                 
                 {/* 步骤 1: 资产变化 */}
-                {resultStep >= 1 && (
+                {resultStep >= 1 && lastResult && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    className={`mb-4 p-4 rounded-xl ${lastResult?.assetsChange >= 0 ? 'bg-green-500/30' : 'bg-red-500/30'}`}
+                    className={`mb-4 p-4 rounded-xl ${lastResult.assetsChange >= 0 ? 'bg-green-500/30' : 'bg-red-500/30'}`}
                   >
                     <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '资产变化' : 'Assets'}</p>
-                    <div className="flex justify-center items-center gap-4">
+                    <div className="flex justify-center items-center gap-4 flex-wrap">
                       <p className="text-white text-lg">${prevAssets.toLocaleString()}</p>
-                      <span className={`text-2xl font-bold ${lastResult?.assetsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {lastResult?.assetsChange >= 0 ? '→' : '→'} {lastResult?.assetsChange >= 0 ? '+' : ''}${lastResult?.assetsChange?.toLocaleString()}
+                      <span className={`text-2xl font-bold ${lastResult.assetsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        → {lastResult.assetsChange >= 0 ? '+' : ''}${lastResult.assetsChange.toLocaleString()}
                       </span>
-                      <p className={`text-xl font-bold ${lastResult?.assetsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        ${newAssets.toLocaleString()}
+                      <p className={`text-xl font-bold ${lastResult.assetsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        ${lastResult._calculatedNewAssets.toLocaleString()}
                       </p>
                     </div>
                   </motion.div>
                 )}
                 
                 {/* 步骤 2: 威望变化 */}
-                {resultStep >= 2 && (
+                {resultStep >= 2 && lastResult && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    className={`mb-4 p-4 rounded-xl ${lastResult?.prestigeChange >= 0 ? 'bg-blue-500/30' : 'bg-red-500/30'}`}
+                    className={`mb-4 p-4 rounded-xl ${lastResult.prestigeChange >= 0 ? 'bg-blue-500/30' : 'bg-red-500/30'}`}
                   >
                     <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '威望变化' : 'Prestige'}</p>
                     <div className="flex justify-center items-center gap-4">
                       <p className="text-white text-lg">{prevPrestige}%</p>
-                      <span className={`text-2xl font-bold ${lastResult?.prestigeChange >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
-                        {lastResult?.prestigeChange >= 0 ? '↑' : '↓'} {lastResult?.prestigeChange >= 0 ? '+' : ''}{lastResult?.prestigeChange}%
+                      <span className={`text-2xl font-bold ${lastResult.prestigeChange >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
+                        {lastResult.prestigeChange >= 0 ? '↑' : '↓'} {lastResult.prestigeChange >= 0 ? '+' : ''}{lastResult.prestigeChange}%
                       </span>
-                      <p className={`text-xl font-bold ${lastResult?.prestigeChange >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
-                        {newPrestige}%
+                      <p className={`text-xl font-bold ${lastResult.prestigeChange >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
+                        {lastResult._calculatedNewPrestige}%
                       </p>
                     </div>
                   </motion.div>
                 )}
                 
                 {/* 步骤 3: 调查风险 */}
-                {resultStep >= 3 && (
+                {resultStep >= 3 && lastResult && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    className={`mb-4 p-4 rounded-xl ${lastResult?.investigationChange > 0 ? 'bg-red-500/30' : 'bg-green-500/30'}`}
+                    className={`mb-4 p-4 rounded-xl ${lastResult.investigationChange > 0 ? 'bg-red-500/30' : 'bg-green-500/30'}`}
                   >
                     <p className="text-white/70 text-sm mb-2">{language === 'zh' ? '调查风险' : 'Investigation Risk'}</p>
                     <div className="flex justify-center items-center gap-4">
                       <p className="text-white text-lg">{prevInvestigation}%</p>
-                      <span className={`text-2xl font-bold ${lastResult?.investigationChange > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                        {lastResult?.investigationChange > 0 ? '↑' : '→'} {lastResult?.investigationChange > 0 ? '+' : ''}{lastResult?.investigationChange}%
+                      <span className={`text-2xl font-bold ${lastResult.investigationChange > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                        {lastResult.investigationChange > 0 ? '↑' : '→'} {lastResult.investigationChange > 0 ? '+' : ''}{lastResult.investigationChange}%
                       </span>
-                      <p className={`text-xl font-bold ${newInvestigation >= 50 ? 'text-red-400' : newInvestigation >= 25 ? 'text-yellow-400' : 'text-green-400'}`}>
-                        {newInvestigation}%
+                      <p className={`text-xl font-bold ${lastResult._calculatedNewInvestigation >= 50 ? 'text-red-400' : lastResult._calculatedNewInvestigation >= 25 ? 'text-yellow-400' : 'text-green-400'}`}>
+                        {lastResult._calculatedNewInvestigation}%
                       </p>
                     </div>
                   </motion.div>
                 )}
                 
                 {/* 步骤 4: 内幕交易警告 */}
-                {resultStep >= 4 && lastResult?.insiderTrading && (
+                {resultStep >= 4 && lastResult && lastResult.insiderTrading && (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.9 }} 
                     animate={{ opacity: 1, scale: 1 }} 
@@ -289,7 +302,7 @@ export default function StoryScreenV2() {
                 )}
                 
                 {/* 继续按钮 - 最后显示 */}
-                {(resultStep >= 4 || (resultStep >= 3 && !lastResult?.insiderTrading)) && (
+                {(resultStep >= 4 || (resultStep >= 3 && lastResult && !lastResult.insiderTrading)) && (
                   <motion.button 
                     initial={{ opacity: 0 }} 
                     animate={{ opacity: 1 }} 
