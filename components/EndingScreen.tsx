@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useGameStore } from '../store/gameStore';
-import { ENDINGS } from '../data/endings';
+import { useGameStore } from '../store/gameStoreV2';
+import { ENDINGS } from '../data/endingsV2';
 import TrumpAvatar from './TrumpAvatar';
 
 export default function EndingScreen() {

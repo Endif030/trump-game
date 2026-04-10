@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useGameStore } from '../store/gameStore';
+import { useGameStore } from '../store/gameStoreV2';
 import { INTRO_TEXT } from '../data/endings';
 import TrumpAvatar from './TrumpAvatar';
 
